@@ -6,46 +6,50 @@
 <style>
   /* Colors */
   .six {
-    color: #006DB8;
+    background-color: #006DB8;
   }
   .seven {
-    color: #75C695;
+    background-color: #75C695;
   }
   .twelve {
-    color: #85D2DD;
+    background-color: #85D2DD;
   }
   .eighteen {
-    color: #8D6538;
+    background-color: #8D6538;
   }
   .thirty-six {
-    color: #C4A2CB;
+    background-color: #C4A2CB;
   }
   .fifty-one-b {
-    color: #008B59;
+    background-color: #008B59;
   }
   .fifty-two {
-    color: #F598AA;
+    background-color: #F598AA;
   }
   .sixty-five {
-    color: #652D91;
+    background-color: #652D91;
   }
   .sixty-seven {
-    color: #FECD08;
+    background-color: #FECD08;
   }
   .seventy-nine {
-    color: #00B1B0;
+    background-color: #00B1B0;
   }
   .eighty-eight {
-    color: #9A983A;
+    background-color: #9A983A;
   }
   .f {
-    color: #F79447;
+    background-color: #F79447;
+  }
+
+  .dir {
+    display: none;
   }
 
   .map {
     /*margin: auto;*/
     height: 800px;
-    width: 80%;
+    width: 100%;
   }
 </style>
 <script src="{% static "js/ol.js" %}" type="text/javascript"></script>
@@ -53,18 +57,68 @@
 <h1>Are ACTransit Buses on Schedule?</h1>
 <h3>Choose a bus line and then its direction.</h3>
 <!-- <button onclick="hide()">Click me</button> -->
-<button onclick="">6</button>
-<button onclick="">7</button>
-<button onclick="">12</button>
-<button onclick="">18</button>
-<button onclick="">36</button>
-<button onclick="">51B</button>
-<button onclick="">52</button>
-<button onclick="">65</button>
-<button onclick="">67</button>
-<button onclick="">79</button>
-<button onclick="">88</button>
-<button onclick="">F</button>
+<div id="lines">
+  <button onclick="toggleDir('6')" class="six">6</button>
+  <button onclick="toggleDir('7')" class="seven">7</button>
+  <button onclick="toggleDir('12')" class="twelve">12</button>
+  <button onclick="toggleDir('18')" class="eighteen">18</button>
+  <button onclick="toggleDir('36')" class="thirty-six">36</button>
+  <button onclick="toggleDir('51B')" class="fifty-one-b">51B</button>
+  <button onclick="toggleDir('52')" class="fifty-two">52</button>
+  <button onclick="toggleDir('65')" class="sixty-five">65</button>
+  <button onclick="toggleDir('67')" class="sixty-seven">67</button>
+  <button onclick="toggleDir('79')" class="seventy-nine">79</button>
+  <button onclick="toggleDir('88')" class="eighty-eight">88</button>
+  <button onclick="toggleDir('F')" class="f">F</button>
+</div>
+<div class="dir" id="direction-6">
+  <button onclick="toggleRoute(0)">To Downtown Berkeley</button>
+  <button onclick="toggleRoute(1)">To Downtown Oakland</button>
+</div>
+<div class="dir" id="direction-7">
+  <button onclick="toggleRoute(2)">To Downtown Berkeley</button>
+  <button onclick="toggleRoute(3)">To El Cerrito Del Norte BART</button>
+</div>
+<div class="dir" id="direction-12">
+  <button onclick="toggleRoute(4)">To Oakland Amtrak</button>
+  <button onclick="toggleRoute(5)">To West Berkeley</button>
+</div>
+<div class="dir" id="direction-18">
+  <button onclick="toggleRoute(6)">To Lake Merritt BART</button>
+  <button onclick="toggleRoute(7)">To University Village, Albany</button>
+</div>
+<div class="dir" id="direction-36">
+  <button onclick="toggleRoute(8)">To U.C. Campus</button>
+  <button onclick="toggleRoute(9)">To West Oakland BART</button>
+</div>
+<div class="dir" id="direction-51B">
+  <button onclick="toggleRoute(10)">To Berkeley Amtrak</button>
+  <button onclick="toggleRoute(11)">To Rockridge BART</button>
+</div>
+<div class="dir" id="direction-52">
+  <button onclick="toggleRoute(12)">To U.C. Campus</button>
+  <button onclick="toggleRoute(13)">To University Village, Albany</button>
+</div>
+<div class="dir" id="direction-65">
+  <button onclick="toggleRoute(14)">To Downtown Berkeley</button>
+  <button onclick="toggleRoute(15)">To Lawrence Hall of Science</button>
+</div>
+<div class="dir" id="direction-67">
+  <button onclick="toggleRoute(16)">To Downtown Berkeley</button>
+  <button onclick="toggleRoute(17)">To Tilden Park</button>
+</div>
+<div class="dir" id="direction-79">
+  <button onclick="toggleRoute(18)">To El Cerrito Plaza BART</button>
+  <button onclick="toggleRoute(19)">To Rockridge BART</button>
+</div>
+<div class="dir" id="direction-88">
+  <button onclick="toggleRoute(20)">To Downtown Berkeley</button>
+  <button onclick="toggleRoute(21)">To Lake Merritt BART</button>
+</div>
+<div class="dir" id="direction-F">
+  <button onclick="toggleRoute(22)">To San Francisco</button>
+  <button onclick="toggleRoute(23)">To U.C. Campus</button>
+</div>
 
 <!-- store gpx file names into hidden elements for JS to pick up later -->
 <!-- <div id="filenames" style="display: none">
@@ -76,11 +130,9 @@
 <div id="map" class="map"></div>
 <script type="text/javascript">
 
-  var vectorLayers = [];
   var raster = new ol.layer.Tile({
     source: new ol.source.OSM()
   });
-  vectorLayers.push(raster);
 
   var style = {
     // 'Point': new ol.style.Style({
@@ -105,16 +157,10 @@
     {% endfor %}
   };
 
-  var hidden = new ol.style.Style({
-    stroke: new ol.style.Stroke({
-      color: [255,0,0,0],
-      width: 0
-    })
-  });
-
   // weird way to the gpx file names
   // var gpxList = document.getElementById("filenames").getElementsByTagName('p');
   // var filenames = [];
+  var vectorLayers = [];
   {% for filename in gpx_list %}
     var vector = new ol.layer.Vector({
       source: new ol.source.Vector({
@@ -124,28 +170,40 @@
       style: function() {
         return style['{{ forloop.counter0|intdiv:2 }}'];
       },
-      opacity: 0.5,
+      opacity: 1,
       visible: true
     });
     vectorLayers.push(vector);
   {% endfor %}
 
+  var allLayers = [raster];
   var map = new ol.Map({
     target: 'map',
     // interactions: ol.interaction.defaults({mouseWheelZoom:false}),
     interactions: [],
-    layers: vectorLayers,
+    layers: allLayers.concat(vectorLayers),
     view: new ol.View({
       // 37.868791, -122.256632
-      center: ol.proj.fromLonLat([-122.2572, 37.8688]),
-      minZoom: 16,
-      zoom: 16,
-      //
+      center: ol.proj.fromLonLat([-122.2582, 37.8688]),
+      minZoom: 15,
+      zoom: 15,
       // zoomControl: false,
     })
   });
 
-  // function hide() {
-  //   vector.setStyle(hidden);
-  // }
+  function toggleDir(line) {
+    var dirs = document.getElementsByClassName('dir');
+    for (var i = 0; i < dirs.length; i++) {
+      dirs[i].setAttribute("style", "display: none");
+    }
+    var name = "direction-" + line;
+    document.getElementById(name).setAttribute("style", "display: inline-block");
+  }
+
+  function toggleRoute(index) {
+    for (var i = 0; i < vectorLayers.length; i++) {
+      vectorLayers[i].setVisible(false);
+    }
+    vectorLayers[index].setVisible(true);
+  }
 </script>
