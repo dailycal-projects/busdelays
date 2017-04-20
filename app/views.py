@@ -22,5 +22,7 @@ def index(request):
     # return HttpResponse("status=201")
     path = "app/static/gpx"
     gpx_list = os.listdir(path)
+    for i in range(len(gpx_list)):
+        gpx_list[i] = gpx_list[i][:-4]
     gpx_list.sort(key=sorter)
     return render(request, 'app/index.html', {'gpx_list': gpx_list, 'colors': colors})
