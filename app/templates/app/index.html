@@ -1,1 +1,151 @@
-<h1>Django</h1>
+<!DOCTYPE HTML>
+{% load static %}
+{% load mathfilters %}
+<!-- <link rel="stylesheet" href="{{ STATIC_URL }}style.css" /> -->
+<link rel="stylesheet" href="{% static "css/ol.css" %}"/>
+<style>
+  /* Colors */
+  .six {
+    color: #006DB8;
+  }
+  .seven {
+    color: #75C695;
+  }
+  .twelve {
+    color: #85D2DD;
+  }
+  .eighteen {
+    color: #8D6538;
+  }
+  .thirty-six {
+    color: #C4A2CB;
+  }
+  .fifty-one-b {
+    color: #008B59;
+  }
+  .fifty-two {
+    color: #F598AA;
+  }
+  .sixty-five {
+    color: #652D91;
+  }
+  .sixty-seven {
+    color: #FECD08;
+  }
+  .seventy-nine {
+    color: #00B1B0;
+  }
+  .eighty-eight {
+    color: #9A983A;
+  }
+  .f {
+    color: #F79447;
+  }
+
+  .map {
+    /*margin: auto;*/
+    height: 800px;
+    width: 80%;
+  }
+</style>
+<script src="{% static "js/ol.js" %}" type="text/javascript"></script>
+<script src="{% static "js/d3.js" %}" type="text/javascript"></script>
+<h1>Are ACTransit Buses on Schedule?</h1>
+<h3>Choose a bus line and then its direction.</h3>
+<!-- <button onclick="hide()">Click me</button> -->
+<button onclick="">6</button>
+<button onclick="">7</button>
+<button onclick="">12</button>
+<button onclick="">18</button>
+<button onclick="">36</button>
+<button onclick="">51B</button>
+<button onclick="">52</button>
+<button onclick="">65</button>
+<button onclick="">67</button>
+<button onclick="">79</button>
+<button onclick="">88</button>
+<button onclick="">F</button>
+
+<!-- store gpx file names into hidden elements for JS to pick up later -->
+<!-- <div id="filenames" style="display: none">
+  {% for gpx in gpx_list %}
+  <p>{{ gpx }}</p>
+  {% endfor %}
+</div> -->
+
+<div id="map" class="map"></div>
+<script type="text/javascript">
+
+  var vectorLayers = [];
+  var raster = new ol.layer.Tile({
+    source: new ol.source.OSM()
+  });
+  vectorLayers.push(raster);
+
+  var style = {
+    // 'Point': new ol.style.Style({
+    //   image: new ol.style.Circle({
+    //     fill: new ol.style.Fill({
+    //       color: [255,255,0,0.4]
+    //     }),
+    //     radius: 15,
+    //     stroke: new ol.style.Stroke({
+    //       color: '#111',
+    //       width: 1
+    //     })
+    //   })
+    // }),
+    {% for color in colors %}
+    '{{ forloop.counter0 }}': new ol.style.Style({
+      stroke: new ol.style.Stroke({
+        color: '{{ color }}',
+        width: 10
+      })
+    }),
+    {% endfor %}
+  };
+
+  var hidden = new ol.style.Style({
+    stroke: new ol.style.Stroke({
+      color: [255,0,0,0],
+      width: 0
+    })
+  });
+
+  // weird way to the gpx file names
+  // var gpxList = document.getElementById("filenames").getElementsByTagName('p');
+  // var filenames = [];
+  {% for filename in gpx_list %}
+    var vector = new ol.layer.Vector({
+      source: new ol.source.Vector({
+        url: "{% static 'gpx/' %}{{ filename }}",
+        format: new ol.format.GPX()
+      }),
+      style: function() {
+        return style['{{ forloop.counter0|intdiv:2 }}'];
+      },
+      opacity: 0.5,
+      visible: true
+    });
+    vectorLayers.push(vector);
+  {% endfor %}
+
+  var map = new ol.Map({
+    target: 'map',
+    // interactions: ol.interaction.defaults({mouseWheelZoom:false}),
+    interactions: [],
+    layers: vectorLayers,
+    view: new ol.View({
+      // 37.868791, -122.256632
+      center: ol.proj.fromLonLat([-122.2572, 37.8688]),
+      minZoom: 16,
+      zoom: 16,
+      //
+      // zoomControl: false,
+    })
+  });
+
+  // function hide() {
+  //   vector.setStyle(hidden);
+  // }
+</script>
