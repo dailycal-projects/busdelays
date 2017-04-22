@@ -1,14 +1,62 @@
 <?xml version="1.0"?>
 <gpx version="1.1" creator="GPS Visualizer http://www.gpsvisualizer.com/" xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">
-<wpt lat="37.7970303" lon="-122.2651829">
-  <name>Lake Merritt Station, 800 Madison St, Oakland, CA 94607</name>
+<wpt lat='37.86209' lon='-122.267'>
+	<name>50151</name>
+	<desc><![CDATA[50151]]></desc>
+	<sym>Dot</sym>
+	<type><![CDATA[Dot]]></type>
 </wpt>
-<wpt lat="37.8840891" lon="-122.2998447">
-  <name>Jackson St &amp; Monroe Avenue, Albany, CA 94706</name>
+<wpt lat='37.8639099' lon='-122.26722'>
+	<name>55452</name>
+	<desc><![CDATA[55452]]></desc>
+	<sym>Dot</sym>
+	<type><![CDATA[Dot]]></type>
+</wpt>
+<wpt lat='37.8651099' lon='-122.26737'>
+	<name>51300</name>
+	<desc><![CDATA[51300]]></desc>
+	<sym>Dot</sym>
+	<type><![CDATA[Dot]]></type>
+</wpt>
+<wpt lat='37.8666' lon='-122.26752'>
+	<name>52155</name>
+	<desc><![CDATA[52155]]></desc>
+	<sym>Dot</sym>
+	<type><![CDATA[Dot]]></type>
+</wpt>
+<wpt lat='37.86845' lon='-122.26772'>
+	<name>55585</name>
+	<desc><![CDATA[55585]]></desc>
+	<sym>Dot</sym>
+	<type><![CDATA[Dot]]></type>
+</wpt>
+<wpt lat='37.8701899' lon='-122.26773'>
+	<name>55559</name>
+	<desc><![CDATA[55559]]></desc>
+	<sym>Dot</sym>
+	<type><![CDATA[Dot]]></type>
+</wpt>
+<wpt lat='37.8725399' lon='-122.26832'>
+	<name>57776</name>
+	<desc><![CDATA[57776]]></desc>
+	<sym>Dot</sym>
+	<type><![CDATA[Dot]]></type>
+</wpt>
+<wpt lat='37.87526' lon='-122.26863'>
+	<name>54588</name>
+	<desc><![CDATA[54588]]></desc>
+	<sym>Dot</sym>
+	<type><![CDATA[Dot]]></type>
+</wpt>
+<wpt lat='37.8765199' lon='-122.26875'>
+	<name>57225</name>
+	<desc><![CDATA[57225]]></desc>
+	<sym>Dot</sym>
+	<type><![CDATA[Dot]]></type>
 </wpt>
 <trk>
-  <name>Lake Merritt Station, 800 Madison St, Oakland, CA 94607 - Jackson St &amp; Monroe Avenue, Albany, CA 94706</name>
-  <desc>9.1 mi, 0:38</desc>
+  <name>18_To University Village, Albany</name>
+  <desc>18_To University Village, Albany</desc>
   <trkseg>
     <trkpt lat="37.79748" lon="-122.26561"></trkpt>
     <trkpt lat="37.79787" lon="-122.26632"></trkpt>

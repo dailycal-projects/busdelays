@@ -1,14 +1,44 @@
 <?xml version="1.0"?>
 <gpx version="1.1" creator="GPS Visualizer http://www.gpsvisualizer.com/" xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">
-<wpt lat="37.8687084" lon="-122.2603782">
-  <name>The Bear's Lair, Bancroft Way, Berkeley, CA</name>
+<wpt lat='37.8686099' lon='-122.26052'>
+	<name>54963</name>
+	<desc><![CDATA[54963]]></desc>
+	<sym>Dot</sym>
+	<type><![CDATA[Dot]]></type>
 </wpt>
-<wpt lat="37.884267" lon="-122.298515">
-  <name>Monroe Av:10th St, Albany, CA 94710</name>
+<wpt lat='37.8684599' lon='-122.2619099'>
+	<name>55593</name>
+	<desc><![CDATA[55593]]></desc>
+	<sym>Dot</sym>
+	<type><![CDATA[Dot]]></type>
+</wpt>
+<wpt lat='37.8681699' lon='-122.2640799'>
+	<name>54655</name>
+	<desc><![CDATA[54655]]></desc>
+	<sym>Dot</sym>
+	<type><![CDATA[Dot]]></type>
+</wpt>
+<wpt lat='37.86845' lon='-122.26772'>
+	<name>55585</name>
+	<desc><![CDATA[55585]]></desc>
+	<sym>Dot</sym>
+	<type><![CDATA[Dot]]></type>
+</wpt>
+<wpt lat='37.87076' lon='-122.26766'>
+	<name>55551</name>
+	<desc><![CDATA[55551]]></desc>
+	<sym>Dot</sym>
+	<type><![CDATA[Dot]]></type>
+</wpt>
+<wpt lat='37.8721999' lon='-122.26878'>
+	<name>50444</name>
+	<desc><![CDATA[50444]]></desc>
+	<sym>Dot</sym>
+	<type><![CDATA[Dot]]></type>
 </wpt>
 <trk>
-  <name>The Bear's Lair, Bancroft Way, Berkeley, CA - Monroe Av:10th St, Albany, CA 94710</name>
-  <desc>3.4 mi, 0:19</desc>
+  <name>52_To University Village, Albany</name>
+  <desc>52_To University Village, Albany</desc>
   <trkseg>
     <trkpt lat="37.86861" lon="-122.26052"></trkpt>
     <trkpt lat="37.86854" lon="-122.26051"></trkpt>

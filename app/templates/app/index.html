@@ -70,52 +70,52 @@
   <button onclick="toggleDir('F')" class="f">F</button>
 </div>
 <div class="dir" id="direction-6">
-  <button onclick="toggleRoute(0)">To Downtown Berkeley</button>
-  <button onclick="toggleRoute(1)">To Downtown Oakland</button>
+  <button onclick="toggleRoute(this, 0)">To Downtown Berkeley</button>
+  <button onclick="toggleRoute(this, 1)">To Downtown Oakland</button>
 </div>
 <div class="dir" id="direction-7">
-  <button onclick="toggleRoute(2)">To Downtown Berkeley</button>
-  <button onclick="toggleRoute(3)">To El Cerrito Del Norte BART</button>
+  <button onclick="toggleRoute(this, 2)">To Downtown Berkeley</button>
+  <button onclick="toggleRoute(this, 3)">To El Cerrito Del Norte BART</button>
 </div>
 <div class="dir" id="direction-12">
-  <button onclick="toggleRoute(4)">To Oakland Amtrak</button>
-  <button onclick="toggleRoute(5)">To West Berkeley</button>
+  <button onclick="toggleRoute(this, 4)">To Oakland Amtrak at Jack London Square</button>
+  <button onclick="toggleRoute(this, 5)">To West Berkeley</button>
 </div>
 <div class="dir" id="direction-18">
-  <button onclick="toggleRoute(6)">To Lake Merritt BART</button>
-  <button onclick="toggleRoute(7)">To University Village, Albany</button>
+  <button onclick="toggleRoute(this, 6)">To Lake Merritt BART</button>
+  <button onclick="toggleRoute(this, 7)">To University Village, Albany</button>
 </div>
 <div class="dir" id="direction-36">
-  <button onclick="toggleRoute(8)">To U.C. Campus</button>
-  <button onclick="toggleRoute(9)">To West Oakland BART</button>
+  <button onclick="toggleRoute(this, 8)">To U.C. Campus</button>
+  <button onclick="toggleRoute(this, 9)">To West Oakland BART</button>
 </div>
 <div class="dir" id="direction-51B">
-  <button onclick="toggleRoute(10)">To Berkeley Amtrak</button>
-  <button onclick="toggleRoute(11)">To Rockridge BART</button>
+  <button onclick="toggleRoute(this, 10)">To Berkeley Amtrak</button>
+  <button onclick="toggleRoute(this, 11)">To Rockridge BART</button>
 </div>
 <div class="dir" id="direction-52">
-  <button onclick="toggleRoute(12)">To U.C. Campus</button>
-  <button onclick="toggleRoute(13)">To University Village, Albany</button>
+  <button onclick="toggleRoute(this, 12)">To U.C. Campus</button>
+  <button onclick="toggleRoute(this, 13)">To University Village, Albany</button>
 </div>
 <div class="dir" id="direction-65">
-  <button onclick="toggleRoute(14)">To Downtown Berkeley</button>
-  <button onclick="toggleRoute(15)">To Lawrence Hall of Science</button>
+  <button onclick="toggleRoute(this, 14)">To Downtown Berkeley</button>
+  <button onclick="toggleRoute(this, 15)">To Lawrence Hall of Science</button>
 </div>
 <div class="dir" id="direction-67">
-  <button onclick="toggleRoute(16)">To Downtown Berkeley</button>
-  <button onclick="toggleRoute(17)">To Tilden Park</button>
+  <button onclick="toggleRoute(this, 16)">To Downtown Berkeley</button>
+  <button onclick="toggleRoute(this, 17)">To Tilden Park</button>
 </div>
 <div class="dir" id="direction-79">
-  <button onclick="toggleRoute(18)">To El Cerrito Plaza BART</button>
-  <button onclick="toggleRoute(19)">To Rockridge BART</button>
+  <button onclick="toggleRoute(this, 18)">To El Cerrito Plaza BART</button>
+  <button onclick="toggleRoute(this, 19)">To Rockridge BART</button>
 </div>
 <div class="dir" id="direction-88">
-  <button onclick="toggleRoute(20)">To Downtown Berkeley</button>
-  <button onclick="toggleRoute(21)">To Lake Merritt BART</button>
+  <button onclick="toggleRoute(this, 20)">To Downtown Berkeley</button>
+  <button onclick="toggleRoute(this, 21)">To Lake Merritt BART</button>
 </div>
 <div class="dir" id="direction-F">
-  <button onclick="toggleRoute(22)">To San Francisco</button>
-  <button onclick="toggleRoute(23)">To U.C. Campus</button>
+  <button onclick="toggleRoute(this, 22)">To San Francisco</button>
+  <button onclick="toggleRoute(this, 23)">To U.C. Campus</button>
 </div>
 
 <!-- store gpx file names into hidden elements for JS to pick up later -->
@@ -126,79 +126,16 @@
 </div> -->
 <script src="{% static "js/ol.js" %}" type="text/javascript"></script>
 <script src="{% static "js/d3.js" %}" type="text/javascript"></script>
-<script id="rts" src="{% static "js/rst.json" %}" type="application/json"></script>
+<script src="{% static "js/jquery-3.2.1.js" %}" type="text/javascript"></script>
+
 <div id="map" class="map"></div>
+<div id="info">&nbsp;</div>
+<div id="lines"></div>
+<div id="stops"></div>
+
 <script type="text/javascript">
-  var stops = {"67_To Downtown Berkeley": [["-122.2667199", "37.87643"], ["-122.2663799", "37.87383"], ["-122.2661999", "37.87217"], ["-122.26746", "37.8695399"]], "18_To Lake Merritt BART": [["-122.2689999", "37.87635"], ["-122.2688499", "37.87457"], ["-122.2685399", "37.87237"], ["-122.26825", "37.8704799"], ["-122.2679899", "37.86819"], ["-122.2678099", "37.86647"], ["-122.2674999", "37.86376"], ["-122.2672799", "37.86193"], ["-122.2671699", "37.8606699"]], "36_To West Oakland BART": [["-122.25286", "37.8695799"], ["-122.2551299", "37.8692899"], ["-122.2602499", "37.8686499"], ["-122.2619099", "37.8684599"], ["-122.2640799", "37.8681699"], ["-122.26781", "37.8664699"], ["-122.2679299", "37.8649099"], ["-122.2702899", "37.8645899"]], "51B_To Berkeley Amtrak": [["-122.25348", "37.8620299"], ["-122.25371", "37.86418"], ["-122.25404", "37.86677"], ["-122.2551299", "37.8692899"], ["-122.25991", "37.8686599"], ["-122.2619099", "37.8684599"], ["-122.2640799", "37.8681699"], ["-122.26772", "37.86845"], ["-122.26766", "37.8707599"], ["-122.2687799", "37.8721999"]], "7_To El Cerrito Del Norte BART": [["-122.26765", "37.8694899"], ["-122.26773", "37.87019"], ["-122.26832", "37.8725399"], ["-122.26863", "37.87526"], ["-122.26875", "37.8765199"]], "88_To Lake Merritt BART": [["-122.26882", "37.8693199"]], "52_To U.C. Campus": [["-122.26798", "37.8721199"], ["-122.26598", "37.8727699"], ["-122.26408", "37.87443"], ["-122.26055", "37.87493"], ["-122.25797", "37.8752999"], ["-122.2552299", "37.87347"], ["-122.2528299", "37.871"], ["-122.2523899", "37.86969"], ["-122.2551299", "37.8692899"], ["-122.26052", "37.8686099"]], "800_To Richmond BART": [["-122.267", "37.86209"], ["-122.26722", "37.8639099"], ["-122.26737", "37.8651099"], ["-122.26752", "37.8666"], ["-122.26772", "37.86845"], ["-122.26766", "37.8707599"], ["-122.2687799", "37.8721999"]], "88_To Downtown Berkeley": [["-122.26857", "37.87203"], ["-122.26882", "37.8693199"]], "18_To University Village, Albany": [["-122.267", "37.86209"], ["-122.26722", "37.8639099"], ["-122.26737", "37.8651099"], ["-122.26752", "37.8666"], ["-122.26772", "37.86845"], ["-122.26773", "37.8701899"], ["-122.26832", "37.8725399"], ["-122.26863", "37.87526"], ["-122.26875", "37.8765199"]], "6_To Downtown Oakland": [["-122.26581", "37.8713399"], ["-122.2682499", "37.87048"], ["-122.2679899", "37.86819"], ["-122.26723", "37.86668"], ["-122.26322", "37.8672"], ["-122.26142", "37.86742"], ["-122.2609899", "37.86581"], ["-122.2586199", "37.86451"], ["-122.2591299", "37.86116"], ["-122.2588799", "37.8629199"]], "65_To Downtown Berkeley": [["-122.2604499", "37.87621"], ["-122.2602399", "37.87533"], ["-122.2642299", "37.8745899"], ["-122.2663799", "37.87383"], ["-122.2661999", "37.87217"], ["-122.26763", "37.87092"], ["-122.26655", "37.8712899"]], "F_To U.C. Campus": [["-122.267", "37.86209"], ["-122.26722", "37.8639099"], ["-122.26737", "37.8651099"], ["-122.26752", "37.8666"], ["-122.26772", "37.86845"], ["-122.26773", "37.87019"], ["-122.26832", "37.8725399"], ["-122.26794", "37.8738699"], ["-122.26522", "37.8742299"], ["-122.26408", "37.87443"], ["-122.26055", "37.87493"], ["-122.25797", "37.8753"], ["-122.2552299", "37.87347"], ["-122.2528299", "37.871"], ["-122.2523899", "37.86969"], ["-122.2551299", "37.8692899"], ["-122.2602499", "37.8686499"], ["-122.26191", "37.8684599"]], "79_To El Cerrito Plaza BART": [["-122.2501508", "37.8627487"], ["-122.25027", "37.8645399"], ["-122.25076", "37.8658499"], ["-122.25182", "37.8680599"], ["-122.2526499", "37.8696099"], ["-122.2551299", "37.8692899"], ["-122.2602499", "37.8686499"], ["-122.2619099", "37.8684599"], ["-122.2640799", "37.8681699"], ["-122.26772", "37.86845"], ["-122.26773", "37.8701899"], ["-122.2687799", "37.8721999"]], "65_To Lawrence Hall of Science": [["-122.26655", "37.8712899"], ["-122.26763", "37.87092"], ["-122.26598", "37.8727699"], ["-122.26408", "37.87443"], ["-122.26055", "37.87493"], ["-122.26045", "37.8768499"]], "79_To Rockridge BART": [["-122.26857", "37.87203"], ["-122.26825", "37.8704799"], ["-122.2679899", "37.86819"], ["-122.26723", "37.86668"], ["-122.26322", "37.8672"], ["-122.26084", "37.86749"], ["-122.2586436", "37.8678595"], ["-122.25463", "37.8683"], ["-122.2519899", "37.86748"], ["-122.25141", "37.8659799"], ["-122.2503899", "37.86424"], ["-122.2501999", "37.86246"]], "F_To San Francisco": [["-122.26794", "37.8738699"], ["-122.26522", "37.8742299"], ["-122.26408", "37.87443"], ["-122.26055", "37.87493"], ["-122.25797", "37.8753"], ["-122.2552299", "37.87347"], ["-122.2528299", "37.871"], ["-122.2523899", "37.86969"], ["-122.2551299", "37.8692899"], ["-122.2602499", "37.8686499"], ["-122.26191", "37.8684599"], ["-122.2640799", "37.8681699"], ["-122.26616", "37.8688299"], ["-122.2682499", "37.87048"], ["-122.2679899", "37.86819"], ["-122.2678099", "37.86647"], ["-122.2674999", "37.86376"], ["-122.2672799", "37.86193"], ["-122.2671699", "37.8606699"]], "6_To Downtown Berkeley": [["-122.25882", "37.86161"], ["-122.2586", "37.86307"], ["-122.25836", "37.86499"], ["-122.25861", "37.8662899"], ["-122.2590321", "37.8680096"], ["-122.2619099", "37.8684599"], ["-122.2640799", "37.8681699"], ["-122.26616", "37.8688299"], ["-122.26581", "37.8713399"]], "7_To Downtown Berkeley": [["-122.2689999", "37.87635"], ["-122.2688499", "37.87457"], ["-122.2663799", "37.87383"], ["-122.2661999", "37.87217"], ["-122.26746", "37.8695399"]], "12_To West Berkeley": [["-122.27183", "37.8617799"]], "67_To Tilden Park": [["-122.26765", "37.8694899"], ["-122.26766", "37.87076"], ["-122.26598", "37.8727699"], ["-122.26628", "37.8745099"], ["-122.26658", "37.87677"]], "800_To San Francisco": [["-122.26857", "37.87203"], ["-122.26825", "37.8704799"], ["-122.2679899", "37.86819"], ["-122.2678099", "37.86647"], ["-122.2674999", "37.86376"], ["-122.2672799", "37.86193"], ["-122.2671699", "37.8606699"]], "851_To Fruitvale BART": [["-122.26773", "37.8701899"], ["-122.2682499", "37.87048"], ["-122.2679899", "37.86819"], ["-122.26723", "37.86668"], ["-122.26322", "37.8672"], ["-122.26084", "37.86749"], ["-122.25864", "37.8678399"], ["-122.25463", "37.8683"], ["-122.2541999", "37.86671"], ["-122.2537499", "37.86336"], ["-122.2535999", "37.8619"]], "851_To Downtown Berkeley": [["-122.25348", "37.8620299"], ["-122.25371", "37.86418"], ["-122.25404", "37.86677"], ["-122.2551299", "37.8692899"], ["-122.25991", "37.8686599"], ["-122.2619099", "37.8684599"], ["-122.2640799", "37.8681699"], ["-122.26772", "37.86845"], ["-122.26773", "37.8701899"]], "51B_To Rockridge BART": [["-122.26857", "37.87203"], ["-122.26825", "37.8704799"], ["-122.2679899", "37.86819"], ["-122.26723", "37.86668"], ["-122.26322", "37.8672"], ["-122.26084", "37.86749"], ["-122.25864", "37.8678399"], ["-122.25463", "37.8683"], ["-122.2541999", "37.86671"], ["-122.2537499", "37.86336"], ["-122.2535999", "37.8619"]], "36_To U.C. Campus": [["-122.27175", "37.86335"], ["-122.27003", "37.86358"], ["-122.26737", "37.8651099"], ["-122.26723", "37.8666799"], ["-122.26322", "37.8672"], ["-122.26084", "37.86749"], ["-122.2586436", "37.8678595"], ["-122.25463", "37.8683"], ["-122.25286", "37.8695799"]], "52_To University Village, Albany": [["-122.26052", "37.8686099"], ["-122.2619099", "37.8684599"], ["-122.2640799", "37.8681699"], ["-122.26772", "37.86845"], ["-122.26766", "37.87076"], ["-122.26878", "37.8721999"]]};
 
-  function transform(extent) {
-    return ol.proj.transformExtent(extent, 'EPSG:4326', 'EPSG:3857');
-  }
-
-  var raster = new ol.layer.Tile({
-    source: new ol.source.OSM(),
-    // extent: transform([-122.271856, 37.860317, -122.247710, 37.877256])
-  });
-
-  var style = {
-    {% for color in colors %}
-    'Route{{ forloop.counter0 }}': new ol.style.Style({
-      stroke: new ol.style.Stroke({
-        color: '{{ color }}',
-        width: 10
-      })
-    }),
-    'Point{{ forloop.counter0 }}': new ol.style.Style({
-      image: new ol.style.Circle({
-        fill: new ol.style.Fill({
-          color: '{{ color }}'
-        }),
-        radius: 15,
-        stroke: new ol.style.Stroke({
-          color: '#111111',
-          width: 1
-        })
-      })
-    }),
-    {% endfor %}
-  };
-
-  // weird way to the gpx file names
-  // var gpxList = document.getElementById("filenames").getElementsByTagName('p');
-  // var filenames = [];
-  var vectorLayers = [];
-  {% for filename in gpx_list %}
-    var vector = new ol.layer.Vector({
-      source: new ol.source.Vector({
-        url: "{% static 'gpx/' %}{{ filename }}.gpx",
-        format: new ol.format.GPX()
-      }),
-      style: function() {
-        return style['Route{{ forloop.counter0|intdiv:2 }}'];
-      },
-      opacity: 0.8,
-      visible: false
-    });
-    vectorLayers.push(vector);
-
-    
-  {% endfor %}
-
-  var allLayers = [raster];
-  var map = new ol.Map({
-    target: 'map',
-    // interactions: ol.interaction.defaults({mouseWheelZoom:false}),
-    interactions: [],
-    layers: allLayers.concat(vectorLayers),
-    view: new ol.View({
-      // 37.868791, -122.256632
-      center: ol.proj.fromLonLat([-122.2582, 37.8688]),
-      minZoom: 15,
-      zoom: 15,
-      // zoomControl: false,
-    })
-  });
-
+  /* UTILITY FUNCTIONS */
   function toggleDir(line) {
     for (var i = 0; i < vectorLayers.length; i++) {
       vectorLayers[i].setVisible(false);
@@ -208,13 +145,198 @@
       dirs[i].setAttribute("style", "display: none");
     }
     var name = "direction-" + line;
+    bus = line;
     document.getElementById(name).setAttribute("style", "display: inline-block");
-  }
+  };
 
-  function toggleRoute(index) {
+  function toggleRoute(dom, index) {
     for (var i = 0; i < vectorLayers.length; i++) {
       vectorLayers[i].setVisible(false);
     }
     vectorLayers[index].setVisible(true);
-  }
+    color = Math.floor(index / 2);
+    dir = dom.textContent;
+  };
+
+  function convertHex(hex, opacity) {
+    hex = hex.replace('#','');
+    r = parseInt(hex.substring(0,2), 16);
+    g = parseInt(hex.substring(2,4), 16);
+    b = parseInt(hex.substring(4,6), 16);
+    result = [r, g, b, opacity/100];
+    return result;
+  };
+
+  function convertTime(seconds) {
+    m = Math.floor(Math.floor(seconds) / 60);
+    s = Math.floor(seconds) % 60;
+    return ("0" + m).slice(-2) + ":" + ("0" + s).slice(-2);
+  };
+
+  function activateFeature(pixel, onEvent) {
+    var features = [];
+    map.forEachFeatureAtPixel(pixel, function(feature) {
+      features.push(feature);
+    });
+    /* Clear all active features on click. Clear all features that
+       are not activated by a previous click on mouseover. */
+    if (onEvent === "click") {
+      if (active != null) {
+        var activeType = active.getGeometry().getType();
+        active.setStyle(style[activeType + color]);
+        active = null;
+      }
+    } else {
+      if (hover != null && hover !== active) {
+        var hoverType = hover.getGeometry().getType();
+        hover.setStyle(style[hoverType + color]);
+        hover = null;
+      }
+    }
+    /* Highlight top feature */
+    if (features.length > 0) {
+      map.getViewport().style.cursor = 'pointer';
+      var info = [];
+      for (var i = 0; i < features.length; i++) {
+        info.push(features[i].get('desc'));
+      }
+      var type = features[0].getGeometry().getType();
+      features[0].setStyle(style[type + color + "::active"]);
+      if (onEvent === "click") {
+        active = features[0];
+        var stats = fetchInfo(active.get('desc'), false);
+      } else {
+        hover = features[0];
+      }
+    } else {
+      map.getViewport().style.cursor = '';
+    }
+  };
+
+  function fetchInfo(id, isGeneral) {
+    var key = id;
+    if (!id.includes("_") && !isGeneral) {
+      key = id + "_" + bus + "_" + dir;
+    }
+    var summary = [];
+    var mean = data[key]["mean"];
+    summary.push(convertTime(mean));
+    var median = data[key]["median"];
+    summary.push(convertTime(median));
+    var std = data[key]["std"];
+    summary.push(convertTime(std));
+    var late = data[key]["late"];
+    summary.push(late + "% at least 5min late");
+    var vlate = data[key]["vlate"];
+    summary.push(vlate + "% at least 10min late");
+    return summary;
+    // document.getElementById('info').innerHTML = '&nbsp;';
+  };
+
+  /* GLOBAL VARIABLES TO KEEP TRACK OF */
+  var data; /* fetch json asynchronously */
+  $.getJSON("{% static 'js/data.json' %}", function(result){
+    data = result;
+  });
+  var bus = ""; /* current bus line */
+  var dir = ""; /* current bus direction */
+  var color = 0; /* color of current line */
+  var active = null; /* active feature */
+  var hover = null; /* hover feature */
+  var vectorLayers = [];
+
+
+
+  // function transform(extent) {
+  //   return ol.proj.transformExtent(extent, 'EPSG:4326', 'EPSG:3857');
+  // }
+
+  var raster = new ol.layer.Tile({
+    source: new ol.source.OSM(),
+    // extent: transform([-122.271856, 37.860317, -122.247710, 37.877256])
+  });
+
+  /* MAP STYLES */
+  var style = {
+    {% for color in colors %}
+    'MultiLineString{{ forloop.counter0 }}': new ol.style.Style({
+      stroke: new ol.style.Stroke({
+        color: convertHex('{{ color }}', 60),
+        width: 10
+      })
+    }),
+    'MultiLineString{{ forloop.counter0 }}::active': new ol.style.Style({
+      stroke: new ol.style.Stroke({
+        color: '{{ color }}',
+        width: 15
+      })
+    }),
+    'Point{{ forloop.counter0 }}': new ol.style.Style({
+      image: new ol.style.Circle({
+        fill: new ol.style.Fill({
+          color: convertHex('{{ color }}', 60)
+        }),
+        radius: 12,
+        stroke: new ol.style.Stroke({
+          color: '#111',
+          width: 1
+        })
+      })
+    }),
+    'Point{{ forloop.counter0 }}::active': new ol.style.Style({
+      image: new ol.style.Circle({
+        fill: new ol.style.Fill({
+          color: '{{ color }}'
+        }),
+        radius: 12,
+        stroke: new ol.style.Stroke({
+          color: '#111',
+          width: 3
+        })
+      })
+    }),
+    {% endfor %}
+  };
+
+  {% for name in gpx_list %}
+  var vector = new ol.layer.Vector({
+    source: new ol.source.Vector({
+      url: "{% static 'gpx/' %}{{ name }}.gpx",
+      format: new ol.format.GPX()
+    }),
+    style: function(feature) {
+      var type = feature.getGeometry().getType();
+      return style[type + '{{ forloop.counter0|intdiv:2 }}'];
+    },
+    opacity: 1,
+    visible: false
+  });
+  vectorLayers.push(vector);
+  {% endfor %}
+
+
+  var map = new ol.Map({
+    target: 'map',
+    interactions: ol.interaction.defaults({mouseWheelZoom:false}),
+    // interactions: [],
+    layers: Array(raster).concat(vectorLayers),
+    view: new ol.View({
+      // 37.868791, -122.256632
+      center: ol.proj.fromLonLat([-122.2582, 37.8688]),
+      maxZoom: 17,
+      minZoom: 15,
+      zoom: 16,
+      // zoomControl: false,
+    })
+  });
+
+  map.on('pointermove', function(evt) {
+    activateFeature(evt.pixel, 'pointermove');
+  });
+
+  map.on('click', function(evt) {
+    activateFeature(evt.pixel, 'click');
+  });
+
+
 </script>

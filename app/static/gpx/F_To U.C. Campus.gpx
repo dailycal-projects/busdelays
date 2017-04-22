@@ -1,14 +1,116 @@
 <?xml version="1.0"?>
 <gpx version="1.1" creator="GPS Visualizer http://www.gpsvisualizer.com/" xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">
-<wpt lat="37.7898997" lon="-122.3933556">
-  <name>Temporary Transbay Terminal, San Francisco, CA</name>
+<wpt lat='37.86209' lon='-122.267'>
+	<name>50151</name>
+	<desc><![CDATA[50151]]></desc>
+	<sym>Dot</sym>
+	<type><![CDATA[Dot]]></type>
 </wpt>
-<wpt lat="37.8684357" lon="-122.2614604">
-  <name>Bancroft Way &amp; Dana St, Berkeley, CA</name>
+<wpt lat='37.8639099' lon='-122.26722'>
+	<name>55452</name>
+	<desc><![CDATA[55452]]></desc>
+	<sym>Dot</sym>
+	<type><![CDATA[Dot]]></type>
+</wpt>
+<wpt lat='37.8651099' lon='-122.26737'>
+	<name>51300</name>
+	<desc><![CDATA[51300]]></desc>
+	<sym>Dot</sym>
+	<type><![CDATA[Dot]]></type>
+</wpt>
+<wpt lat='37.8666' lon='-122.26752'>
+	<name>52155</name>
+	<desc><![CDATA[52155]]></desc>
+	<sym>Dot</sym>
+	<type><![CDATA[Dot]]></type>
+</wpt>
+<wpt lat='37.86845' lon='-122.26772'>
+	<name>55585</name>
+	<desc><![CDATA[55585]]></desc>
+	<sym>Dot</sym>
+	<type><![CDATA[Dot]]></type>
+</wpt>
+<wpt lat='37.87019' lon='-122.26773'>
+	<name>55559</name>
+	<desc><![CDATA[55559]]></desc>
+	<sym>Dot</sym>
+	<type><![CDATA[Dot]]></type>
+</wpt>
+<wpt lat='37.8725399' lon='-122.26832'>
+	<name>57776</name>
+	<desc><![CDATA[57776]]></desc>
+	<sym>Dot</sym>
+	<type><![CDATA[Dot]]></type>
+</wpt>
+<wpt lat='37.8738699' lon='-122.26794'>
+	<name>51072</name>
+	<desc><![CDATA[51072]]></desc>
+	<sym>Dot</sym>
+	<type><![CDATA[Dot]]></type>
+</wpt>
+<wpt lat='37.8742299' lon='-122.26522'>
+	<name>50607</name>
+	<desc><![CDATA[50607]]></desc>
+	<sym>Dot</sym>
+	<type><![CDATA[Dot]]></type>
+</wpt>
+<wpt lat='37.87443' lon='-122.26408'>
+	<name>58558</name>
+	<desc><![CDATA[58558]]></desc>
+	<sym>Dot</sym>
+	<type><![CDATA[Dot]]></type>
+</wpt>
+<wpt lat='37.87493' lon='-122.26055'>
+	<name>55006</name>
+	<desc><![CDATA[55006]]></desc>
+	<sym>Dot</sym>
+	<type><![CDATA[Dot]]></type>
+</wpt>
+<wpt lat='37.8753' lon='-122.25797'>
+	<name>57955</name>
+	<desc><![CDATA[57955]]></desc>
+	<sym>Dot</sym>
+	<type><![CDATA[Dot]]></type>
+</wpt>
+<wpt lat='37.87347' lon='-122.2552299'>
+	<name>53700</name>
+	<desc><![CDATA[53700]]></desc>
+	<sym>Dot</sym>
+	<type><![CDATA[Dot]]></type>
+</wpt>
+<wpt lat='37.871' lon='-122.2528299'>
+	<name>55967</name>
+	<desc><![CDATA[55967]]></desc>
+	<sym>Dot</sym>
+	<type><![CDATA[Dot]]></type>
+</wpt>
+<wpt lat='37.86969' lon='-122.2523899'>
+	<name>52995</name>
+	<desc><![CDATA[52995]]></desc>
+	<sym>Dot</sym>
+	<type><![CDATA[Dot]]></type>
+</wpt>
+<wpt lat='37.8692899' lon='-122.2551299'>
+	<name>59555</name>
+	<desc><![CDATA[59555]]></desc>
+	<sym>Dot</sym>
+	<type><![CDATA[Dot]]></type>
+</wpt>
+<wpt lat='37.8686499' lon='-122.2602499'>
+	<name>56888</name>
+	<desc><![CDATA[56888]]></desc>
+	<sym>Dot</sym>
+	<type><![CDATA[Dot]]></type>
+</wpt>
+<wpt lat='37.8684599' lon='-122.26191'>
+	<name></name>
+	<desc><![CDATA[]]></desc>
+	<sym>Dot</sym>
+	<type><![CDATA[Dot]]></type>
 </wpt>
 <trk>
-  <name>Temporary Transbay Terminal, San Francisco, CA - Bancroft Way &amp; Dana St, Berkeley, CA</name>
-  <desc>16.0 mi, 0:49</desc>
+  <name>F_To U.C. Campus</name>
+  <desc>F_To U.C. Campus</desc>
   <trkseg>
     <trkpt lat="37.79024" lon="-122.39292"></trkpt>
     <trkpt lat="37.79062" lon="-122.3934"></trkpt>

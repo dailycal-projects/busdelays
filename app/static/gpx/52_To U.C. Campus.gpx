@@ -1,14 +1,68 @@
 <?xml version="1.0"?>
 <gpx version="1.1" creator="GPS Visualizer http://www.gpsvisualizer.com/" xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">
-<wpt lat="37.884267" lon="-122.298515">
-  <name>Monroe Av:10th St, Albany, CA 94710</name>
+<wpt lat='37.8721199' lon='-122.26798'>
+	<name>57300</name>
+	<desc><![CDATA[57300]]></desc>
+	<sym>Dot</sym>
+	<type><![CDATA[Dot]]></type>
 </wpt>
-<wpt lat="37.8687287" lon="-122.2591604">
-  <name>Telegraph Ave &amp; Bancroft Way, Berkeley, CA 94704</name>
+<wpt lat='37.8727699' lon='-122.26598'>
+	<name>50400</name>
+	<desc><![CDATA[50400]]></desc>
+	<sym>Dot</sym>
+	<type><![CDATA[Dot]]></type>
+</wpt>
+<wpt lat='37.87443' lon='-122.26408'>
+	<name>58558</name>
+	<desc><![CDATA[58558]]></desc>
+	<sym>Dot</sym>
+	<type><![CDATA[Dot]]></type>
+</wpt>
+<wpt lat='37.87493' lon='-122.26055'>
+	<name>55006</name>
+	<desc><![CDATA[55006]]></desc>
+	<sym>Dot</sym>
+	<type><![CDATA[Dot]]></type>
+</wpt>
+<wpt lat='37.8752999' lon='-122.25797'>
+	<name>57955</name>
+	<desc><![CDATA[57955]]></desc>
+	<sym>Dot</sym>
+	<type><![CDATA[Dot]]></type>
+</wpt>
+<wpt lat='37.87347' lon='-122.2552299'>
+	<name>53700</name>
+	<desc><![CDATA[53700]]></desc>
+	<sym>Dot</sym>
+	<type><![CDATA[Dot]]></type>
+</wpt>
+<wpt lat='37.871' lon='-122.2528299'>
+	<name>55967</name>
+	<desc><![CDATA[55967]]></desc>
+	<sym>Dot</sym>
+	<type><![CDATA[Dot]]></type>
+</wpt>
+<wpt lat='37.86969' lon='-122.2523899'>
+	<name>52995</name>
+	<desc><![CDATA[52995]]></desc>
+	<sym>Dot</sym>
+	<type><![CDATA[Dot]]></type>
+</wpt>
+<wpt lat='37.8692899' lon='-122.2551299'>
+	<name>59555</name>
+	<desc><![CDATA[59555]]></desc>
+	<sym>Dot</sym>
+	<type><![CDATA[Dot]]></type>
+</wpt>
+<wpt lat='37.8686099' lon='-122.26052'>
+	<name></name>
+	<desc><![CDATA[]]></desc>
+	<sym>Dot</sym>
+	<type><![CDATA[Dot]]></type>
 </wpt>
 <trk>
-  <name>Monroe Av:10th St, Albany, CA 94710 - Telegraph Ave &amp; Bancroft Way, Berkeley, CA 94704</name>
-  <desc>4.4 mi, 0:25</desc>
+  <name>52_To U.C. Campus</name>
+  <desc>52_To U.C. Campus</desc>
   <trkseg>
     <trkpt lat="37.88427" lon="-122.29852"></trkpt>
     <trkpt lat="37.88434" lon="-122.29854"></trkpt>

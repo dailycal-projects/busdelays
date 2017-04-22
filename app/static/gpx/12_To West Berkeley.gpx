@@ -1,14 +1,14 @@
 <?xml version="1.0"?>
 <gpx version="1.1" creator="GPS Visualizer http://www.gpsvisualizer.com/" xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">
-<wpt lat="37.7941967" lon="-122.2715761">
-  <name>2nd St &amp; Alice St, Oakland, CA 94607</name>
-</wpt>
-<wpt lat="37.8807125" lon="-122.3040882">
-  <name>Fourth St &amp; Harrison St, Berkeley, CA 94710</name>
+<wpt lat='37.8617799' lon='-122.27183'>
+	<name>50765</name>
+	<desc><![CDATA[50765]]></desc>
+	<sym>Dot</sym>
+	<type><![CDATA[Dot]]></type>
 </wpt>
 <trk>
-  <name>2nd St &amp; Alice St, Oakland, CA 94607 - Fourth St &amp; Harrison St, Berkeley, CA 94710</name>
-  <desc>11.0 mi, 0:59</desc>
+  <name>12_To West Berkeley</name>
+  <desc>12_To West Berkeley</desc>
   <trkseg>
     <trkpt lat="37.79442" lon="-122.27155"></trkpt>
     <trkpt lat="37.7944" lon="-122.27148"></trkpt>
