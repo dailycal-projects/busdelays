@@ -5,7 +5,22 @@
 <link rel="stylesheet" href="{% static "css/ol.css" %}"/>
 <link rel="stylesheet" href="{% static "css/style.css" %}"/>
 
-<h1>Are ACTransit Buses on Schedule?</h1>
+<h1>Are AC Transit Buses on Schedule?</h1>
+<div class="article">
+  <p>
+    To view stop predictions, AC Transit provides NextBus, an app that keeps
+    track of bus locations and predicts when they will arrive at a particular
+    stop. To calculate the accuracy of NextBus predictions, The Daily Californian
+    polled the NextBus API for 45,082 predictions for 12 routes and 60 stops around
+    U.C. Campus. These predictions were made half an hour before each bus was scheduled
+    to arrive. NextBus does show predictions up to 80 minutes in advance, but the
+    predictions are usually the same as predictions half an hour in advance. Delays
+    were calculated by comparing the predicted time of arrival versus the actual
+    time for each bus stop. The data provide an interesting look at which routes
+    and stops are busiest according to average delay, and which times of the day
+    are busiest according to the frequency of delays.
+  </p>
+</div>
 <div id="lines">
   <h2>Choose a bus route.</h2>
   <button onclick="toggleDir('6')" class="route-6">6</button>
@@ -92,16 +107,48 @@
     <h3 id="std"></h3>
     <h3 id="late"></h3>
     <h3 id="vlate"></h3>
-    <p>The histogram below takes the delays that are at least 5 minutes to show which times of day appear are the busiest for this stop or route.</p>
+    <p>
+      The histogram below takes the frequency of delays that are at least
+      5 minutes to approximate which times of day (between 6am and midnight) are
+      busiest for this stop or route. The y scale is normalized to the proportion
+      of delays that occured in each time slot.
+    </p>
+    <p id="hist-sum"></p>
     <div id="hist"></div>
+    <p><em>Click the map to hide this information</em></p>
   </div>
 </div>
+<p id="instr"><em>Click on a route or stop to view delay information. Hold and drag the map to navigate.</em></p>
 <div id="additional" class="container">
-  <h2>The most delayed routes..</h2>
+  <div class="article">
+    <h2>The most delayed routes</h2>
+    <p>
+      Sorting the routes (and their directions) by average delay, it appears
+      that the 18, 52, and 51B are the busiest routes.
+    </p>
+  </div>
   <div id="routes-bar"></div>
-  <h2>The most delayed stops..</h2>
+  <div class="article">
+    <h2>The most delayed stops</h2>
+    <p>
+      Average delays per stop in the map above show data for that stop,
+      <em>for that route and direction</em>. However, usually more than one bus route
+      uses each stop. The graph below sorts stops by average delay,
+      <b>combining the delays for all routes that use this bus stop</b>.
+      It appears that stops on Shattuck Ave and Durant Ave see the most delays.
+    </p>
+  </div>
   <div id="stops-bar"></div>
-  <h2>The busiest time of day..</h2>
+  <div class="article">
+    <h2>The busiest time of day</h2>
+    <p>
+      The graph below is similar to the histogram provided in the map above,
+      except it combines delays for all stops and all routes to approximate
+      which times of day are busiest to take AC Transit nearby U.C. Campus.
+      Overall, delays are relatively even for all times, except for in the
+      morning (9:00AM-9:30AM spike aside), when delays are relatively low.
+    </p>
+  </div>
   <div id="times-bar"></div>
 </div>
 
@@ -124,6 +171,7 @@
 
   function toggleRoute(dom, index) {
     document.getElementById("cover").style.display = "none";
+    document.getElementById("instr").style.display = "block";
     document.getElementById("additional").style.display = "block";
     for (var i = 0; i < vectorLayers.length; i++) {
       vectorLayers[i].setVisible(false);
@@ -155,6 +203,19 @@
     } else {
       return m + " min " + s + " sec";
     }
+  };
+
+  function getTimeSlot(index) {
+    var hour = Math.floor(index / 2) + 6;
+    var ampm = "AM";
+    if (hour >= 12 || hour <= 24) {
+      ampm = "PM";
+    }
+    var min = ":00";
+    if (index % 2 === 1) {
+      min = ":30"
+    }
+    return hour % 12 + min + ampm;
   };
 
   function sortByDelay(list) {
@@ -382,7 +443,9 @@
         document.getElementById("late").innerHTML = innerHTML;
         innerHTML = "At least 10 minutes delay: <span>" + Math.floor(data[key]["vlate"] / data[key]["length"] * 100) + "%</span>";
         document.getElementById("vlate").innerHTML = innerHTML;
-        drawHist(data[key]["hist"], "hist");
+        var summ = drawHist(data[key]["hist"], "hist");
+        innerHTML = "So in this case, the busiest time slot was <b>" + getTimeSlot(summ[0]) + "-" + getTimeSlot(summ[0] + 1) + "</b>, which saw <b>" + summ[1] + "%</b> of delays on this stop or route.";
+        document.getElementById("hist-sum").innerHTML = innerHTML;
       } else {
         hover = features[0];
       }
@@ -411,6 +474,7 @@
   function drawHist(dataset, option) {
     d3.select("#info svg").remove();
     var max = d3.max(dataset);
+    var maxi = 0;
     var total = 0;
     for (var i = 0; i < dataset.length; i++) {
       total += dataset[i];
@@ -426,7 +490,7 @@
         bottom: 20,
         left: 40
       };
-      width = 450;
+      width = 520;
       height = 130;
     } else {
       margin = {
@@ -460,7 +524,10 @@
         return margin.top + h - Math.floor(d / max * h);  //Height minus data value
       })
       .attr("width", w / dataset.length - barPadding)
-      .attr("height", function(d) {
+      .attr("height", function(d, i) {
+        if (d === max) {
+          maxi = i;
+        }
         return Math.floor(d / max * h);
       })
       .attr("fill", function(d) { // green: 0,118,87 red: 213,45,45
@@ -489,6 +556,7 @@
       .attr("class", "y axis")
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
       .call(yAxis);
+    return [maxi, Math.floor(max / total * 100)];
   }
 
   /*

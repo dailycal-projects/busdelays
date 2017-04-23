@@ -48,7 +48,18 @@
   fill: #F79447;
 }
 
-h1, h2 {
+.article {
+  text-align: left;
+  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.article p {
+  font-size: 14px;
+}
+
+h1 {
   text-align: center;
 }
 
@@ -150,8 +161,17 @@ h1, h2 {
 }
 
 #cover p {
-  padding-top: 280px;
+  padding-top: 140px;
   font-size: 24px;
+}
+
+#instr {
+  text-align: right;
+  width: 90%;
+  margin-top: 612px;
+  margin-left: auto;
+  margin-right: auto;
+  display: none;
 }
 
 #map {
@@ -177,8 +197,8 @@ h1, h2 {
   display: none;
   position: absolute;
   right: 0;
-  background-color: rgba(255,255,255,0.6);
-  padding: 48px 30px 48px 30px;
+  background-color: rgba(255,255,255,0.7);
+  padding: 32px;
   z-index: 1;
 }
 
@@ -238,9 +258,8 @@ h1, h2 {
 
 #additional {
   display: none;
-  margin-top: 612px;
-  text-align: center;
   position: relative;
+  text-align: center;
 }
 
 /*#routes-bar, #stops-bar, #times-bar {
