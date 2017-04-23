@@ -1,137 +1,158 @@
 <!DOCTYPE HTML>
 {% load static %}
 {% load mathfilters %}
-<!-- <link rel="stylesheet" href="{{ STATIC_URL }}style.css" /> -->
+<link rel="stylesheet" href="{% static "css/bootstrap.css" %}"/>
 <link rel="stylesheet" href="{% static "css/ol.css" %}"/>
+<link rel="stylesheet" href="{% static "css/style.css" %}"/>
 <style>
   /* Colors */
-  .six {
+  .route-6 {
     background-color: {{ colors.0 }};
+    fill: {{ colors.0 }};
   }
-  .seven {
+  .route-7 {
     background-color: {{ colors.1 }};
+    fill: {{ colors.1 }};
   }
-  .twelve {
+  .route-12 {
     background-color: {{ colors.2 }};
+    fill: {{ colors.2 }};
   }
-  .eighteen {
+  .route-18 {
     background-color: {{ colors.3 }};
+    fill: {{ colors.3 }};
   }
-  .thirty-six {
+  .route-36 {
     background-color: {{ colors.4 }};
+    fill: {{ colors.4 }};
   }
-  .fifty-one-b {
+  .route-51B {
     background-color: {{ colors.5 }};
+    fill: {{ colors.5 }};
   }
-  .fifty-two {
+  .route-52 {
     background-color: {{ colors.6 }};
+    fill: {{ colors.6 }};
   }
-  .sixty-five {
+  .route-65 {
     background-color: {{ colors.7 }};
+    fill: {{ colors.7 }};
   }
-  .sixty-seven {
+  .route-67 {
     background-color: {{ colors.8 }};
+    fill: {{ colors.8 }};
   }
-  .seventy-nine {
+  .route-79 {
     background-color: {{ colors.9 }};
+    fill: {{ colors.9 }};
   }
-  .eighty-eight {
+  .route-88 {
     background-color: {{ colors.10 }};
+    fill: {{ colors.10 }};
   }
-  .f {
+  .route-F {
     background-color: {{ colors.11 }};
-  }
-
-  .dir {
-    display: none;
-  }
-
-  .map {
-    /*margin: auto;*/
-    height: 800px;
-    width: 100%;
+    fill: {{ colors.11 }};
   }
 </style>
+
 <h1>Are ACTransit Buses on Schedule?</h1>
-<h3>Choose a bus line and then its direction.</h3>
-<!-- <button onclick="hide()">Click me</button> -->
 <div id="lines">
-  <button onclick="toggleDir('6')" class="six">6</button>
-  <button onclick="toggleDir('7')" class="seven">7</button>
-  <button onclick="toggleDir('12')" class="twelve">12</button>
-  <button onclick="toggleDir('18')" class="eighteen">18</button>
-  <button onclick="toggleDir('36')" class="thirty-six">36</button>
-  <button onclick="toggleDir('51B')" class="fifty-one-b">51B</button>
-  <button onclick="toggleDir('52')" class="fifty-two">52</button>
-  <button onclick="toggleDir('65')" class="sixty-five">65</button>
-  <button onclick="toggleDir('67')" class="sixty-seven">67</button>
-  <button onclick="toggleDir('79')" class="seventy-nine">79</button>
-  <button onclick="toggleDir('88')" class="eighty-eight">88</button>
-  <button onclick="toggleDir('F')" class="f">F</button>
+  <h2>Choose a bus route.</h2>
+  <button onclick="toggleDir('6')" class="route-6">6</button>
+  <button onclick="toggleDir('7')" class="route-7">7</button>
+  <button onclick="toggleDir('12')" class="route-12">12</button>
+  <button onclick="toggleDir('18')" class="route-18">18</button>
+  <button onclick="toggleDir('36')" class="route-36">36</button>
+  <button onclick="toggleDir('51B')" class="route-51B">51B</button>
+  <button onclick="toggleDir('52')" class="route-52">52</button>
+  <button onclick="toggleDir('65')" class="route-65">65</button>
+  <button onclick="toggleDir('67')" class="route-67">67</button>
+  <button onclick="toggleDir('79')" class="route-79">79</button>
+  <button onclick="toggleDir('88')" class="route-88">88</button>
+  <button onclick="toggleDir('F')" class="route-F">F</button>
 </div>
-<div class="dir" id="direction-6">
-  <button onclick="toggleRoute(this, 0)">To Downtown Berkeley</button>
-  <button onclick="toggleRoute(this, 1)">To Downtown Oakland</button>
-</div>
-<div class="dir" id="direction-7">
-  <button onclick="toggleRoute(this, 2)">To Downtown Berkeley</button>
-  <button onclick="toggleRoute(this, 3)">To El Cerrito Del Norte BART</button>
-</div>
-<div class="dir" id="direction-12">
-  <button onclick="toggleRoute(this, 4)">To Oakland Amtrak at Jack London Square</button>
-  <button onclick="toggleRoute(this, 5)">To West Berkeley</button>
-</div>
-<div class="dir" id="direction-18">
-  <button onclick="toggleRoute(this, 6)">To Lake Merritt BART</button>
-  <button onclick="toggleRoute(this, 7)">To University Village, Albany</button>
-</div>
-<div class="dir" id="direction-36">
-  <button onclick="toggleRoute(this, 8)">To U.C. Campus</button>
-  <button onclick="toggleRoute(this, 9)">To West Oakland BART</button>
-</div>
-<div class="dir" id="direction-51B">
-  <button onclick="toggleRoute(this, 10)">To Berkeley Amtrak</button>
-  <button onclick="toggleRoute(this, 11)">To Rockridge BART</button>
-</div>
-<div class="dir" id="direction-52">
-  <button onclick="toggleRoute(this, 12)">To U.C. Campus</button>
-  <button onclick="toggleRoute(this, 13)">To University Village, Albany</button>
-</div>
-<div class="dir" id="direction-65">
-  <button onclick="toggleRoute(this, 14)">To Downtown Berkeley</button>
-  <button onclick="toggleRoute(this, 15)">To Lawrence Hall of Science</button>
-</div>
-<div class="dir" id="direction-67">
-  <button onclick="toggleRoute(this, 16)">To Downtown Berkeley</button>
-  <button onclick="toggleRoute(this, 17)">To Tilden Park</button>
-</div>
-<div class="dir" id="direction-79">
-  <button onclick="toggleRoute(this, 18)">To El Cerrito Plaza BART</button>
-  <button onclick="toggleRoute(this, 19)">To Rockridge BART</button>
-</div>
-<div class="dir" id="direction-88">
-  <button onclick="toggleRoute(this, 20)">To Downtown Berkeley</button>
-  <button onclick="toggleRoute(this, 21)">To Lake Merritt BART</button>
-</div>
-<div class="dir" id="direction-F">
-  <button onclick="toggleRoute(this, 22)">To San Francisco</button>
-  <button onclick="toggleRoute(this, 23)">To U.C. Campus</button>
+<div id="dirs">
+  <h2>Choose a direction.</h2>
+  <div class="dir" id="direction-6">
+    <button onclick="toggleRoute(this, 0)">To Downtown Berkeley</button>
+    <button onclick="toggleRoute(this, 1)">To Downtown Oakland</button>
+  </div>
+  <div class="dir" id="direction-7">
+    <button onclick="toggleRoute(this, 2)">To Downtown Berkeley</button>
+    <button onclick="toggleRoute(this, 3)">To El Cerrito Del Norte BART</button>
+  </div>
+  <div class="dir" id="direction-12">
+    <button onclick="toggleRoute(this, 4)">To Oakland Amtrak at Jack London Square</button>
+    <button onclick="toggleRoute(this, 5)">To West Berkeley</button>
+  </div>
+  <div class="dir" id="direction-18">
+    <button onclick="toggleRoute(this, 6)">To Lake Merritt BART</button>
+    <button onclick="toggleRoute(this, 7)">To University Village, Albany</button>
+  </div>
+  <div class="dir" id="direction-36">
+    <button onclick="toggleRoute(this, 8)">To U.C. Campus</button>
+    <button onclick="toggleRoute(this, 9)">To West Oakland BART</button>
+  </div>
+  <div class="dir" id="direction-51B">
+    <button onclick="toggleRoute(this, 10)">To Berkeley Amtrak</button>
+    <button onclick="toggleRoute(this, 11)">To Rockridge BART</button>
+  </div>
+  <div class="dir" id="direction-52">
+    <button onclick="toggleRoute(this, 12)">To U.C. Campus</button>
+    <button onclick="toggleRoute(this, 13)">To University Village, Albany</button>
+  </div>
+  <div class="dir" id="direction-65">
+    <button onclick="toggleRoute(this, 14)">To Downtown Berkeley</button>
+    <button onclick="toggleRoute(this, 15)">To Lawrence Hall of Science</button>
+  </div>
+  <div class="dir" id="direction-67">
+    <button onclick="toggleRoute(this, 16)">To Downtown Berkeley</button>
+    <button onclick="toggleRoute(this, 17)">To Tilden Park</button>
+  </div>
+  <div class="dir" id="direction-79">
+    <button onclick="toggleRoute(this, 18)">To El Cerrito Plaza BART</button>
+    <button onclick="toggleRoute(this, 19)">To Rockridge BART</button>
+  </div>
+  <div class="dir" id="direction-88">
+    <button onclick="toggleRoute(this, 20)">To Downtown Berkeley</button>
+    <button onclick="toggleRoute(this, 21)">To Lake Merritt BART</button>
+  </div>
+  <div class="dir" id="direction-F">
+    <button onclick="toggleRoute(this, 22)">To San Francisco</button>
+    <button onclick="toggleRoute(this, 23)">To U.C. Campus</button>
+  </div>
 </div>
 
-<!-- store gpx file names into hidden elements for JS to pick up later -->
-<!-- <div id="filenames" style="display: none">
-  {% for gpx in gpx_list %}
-  <p>{{ gpx }}</p>
-  {% endfor %}
-</div> -->
 <script src="{% static "js/ol.js" %}" type="text/javascript"></script>
 <script src="{% static "js/d3.js" %}" type="text/javascript"></script>
 <script src="{% static "js/jquery-3.2.1.js" %}" type="text/javascript"></script>
 
-<div id="map" class="map"></div>
-<div id="info">&nbsp;</div>
-<div id="lines"></div>
-<div id="stops"></div>
+<div id="map-info">
+  <div id="map" class="map"></div>
+  <div id="info">
+    <h4 id="stopId"></h4>
+    <h2 id="stopName"></h2>
+    <h2 id="route"></h2>
+    <h2 id="direction"></h2>
+    <h3 id="mean"></h3>
+    <h3 id="median"></h3>
+    <h3 id="std"></h3>
+    <h3 id="late"></h3>
+    <h3 id="vlate"></h3>
+    <p>The histogram below takes the delays that are at least 5 minutes to show which times of day appear are the busiest for this stop or route.</p>
+    <div id="hist"></div>
+    <button onclick="hideInfo()">[Hide this side bar]</button>
+  </div>
+</div>
+<div class="container">
+  <h2>The most delayed routes..</h2>
+  <div id="routes-bar"></div>
+  <h2>The most delayed stops..</h2>
+  <div id="stops-bar"></div>
+  <h2>The busiest time of day..</h2>
+  <div id="times-bar"></div>
+</div>
 
 <script type="text/javascript">
 
@@ -147,9 +168,16 @@
     var name = "direction-" + line;
     bus = line;
     document.getElementById(name).setAttribute("style", "display: inline-block");
+    document.getElementById("dirs").setAttribute("style", "opacity: 1");
+    document.getElementById("map").setAttribute("style", "opacity: 1");
+    // view.animate({
+    //   center: london,
+    //   duration: 2000
+    // });
   };
 
   function toggleRoute(dom, index) {
+    // document.getElementById("map").setAttribute("style", "display: block");
     for (var i = 0; i < vectorLayers.length; i++) {
       vectorLayers[i].setVisible(false);
     }
@@ -170,8 +198,16 @@
   function convertTime(seconds) {
     m = Math.floor(Math.floor(seconds) / 60);
     s = Math.floor(seconds) % 60;
-    return ("0" + m).slice(-2) + ":" + ("0" + s).slice(-2);
+    if (m === 0) {
+      return s + " sec";
+    } else {
+      return m + " min " + s + " sec";
+    }
   };
+
+  function transform(extent) {
+    return ol.proj.transformExtent(extent, 'EPSG:4326', 'EPSG:3857');
+  }
 
   function activateFeature(pixel, onEvent) {
     var features = [];
@@ -205,6 +241,7 @@
       if (onEvent === "click") {
         active = features[0];
         var stats = fetchInfo(active.get('desc'), false);
+        fillInfo(stats);
       } else {
         hover = features[0];
       }
@@ -213,31 +250,80 @@
     }
   };
 
+  function sortByDelay(list) {
+    var sorted = list.sort(function(x, y){
+      return d3.descending(x.mean, y.mean);
+    });
+  };
+
   function fetchInfo(id, isGeneral) {
     var key = id;
     if (!id.includes("_") && !isGeneral) {
       key = id + "_" + bus + "_" + dir;
     }
-    var summary = [];
-    var mean = data[key]["mean"];
-    summary.push(convertTime(mean));
-    var median = data[key]["median"];
-    summary.push(convertTime(median));
-    var std = data[key]["std"];
-    summary.push(convertTime(std));
-    var late = data[key]["late"];
-    summary.push(late + "% at least 5min late");
-    var vlate = data[key]["vlate"];
-    summary.push(vlate + "% at least 10min late");
-    return summary;
-    // document.getElementById('info').innerHTML = '&nbsp;';
+    return [key, data[key]];
+  };
+
+  function fillInfo(stats) {
+    document.getElementById("info").style.display = 'block';
+    var marker = stats[0].split("_");
+    document.getElementById("route").innerHTML = bus;
+    document.getElementById("route").className = "route-" + bus;
+    document.getElementById("direction").innerHTML = dir;
+    if (marker.length === 3) {
+      document.getElementById("stopId").style.display = "block";
+      document.getElementById("stopId").innerHTML = "Stop ID: " + marker[0];
+      document.getElementById("stopName").innerHTML = stopNames[marker[0]];
+    } else {
+      document.getElementById("stopId").style.display = "none";
+      document.getElementById("stopName").innerHTML = "Route Information";
+    }
+    document.getElementById("mean").innerHTML = "Average Delay: <span>" + convertTime(stats[1]["mean"]) + "</span>";
+    document.getElementById("median").innerHTML = "Median Delay: <span>" + convertTime(stats[1]["median"]) + "</span>";
+    // document.getElementById("std").innerHTML = "Standard Deviation: " + stats[1]["std"] + " seconds";
+    document.getElementById("late").innerHTML = "At least 5 minutes delay: <span>" + Math.floor(stats[1]["late"] / stats[1]["length"] * 100) + "%</span>";
+    document.getElementById("vlate").innerHTML = "At least 10 minutes delay: <span>" + Math.floor(stats[1]["vlate"] / stats[1]["length"] * 100) + "%</span>";
+    drawHist(stats[1]["hist"], stats[1]["late"]);
+  };
+
+  function hideInfo() {
+    document.getElementById("info").style.display = "none";
   };
 
   /* GLOBAL VARIABLES TO KEEP TRACK OF */
   var data; /* fetch json asynchronously */
+  var routes = []; /* routes by descending order */
+  var stopIds = []; /* stops by descending order */
   $.getJSON("{% static 'js/data.json' %}", function(result){
     data = result;
+    var keys = Object.keys(data);
+    for (var i = 0; i < keys.length; i++) {
+      if (!isNaN(keys[i])) {
+        var copy = jQuery.extend({}, data[keys[i]]);
+        copy.id = keys[i];
+        stopIds.push(copy);
+        continue;
+      }
+      var split = keys[i].split("_");
+      if (split.length === 2) {
+        var copy = jQuery.extend({}, data[keys[i]]);
+        copy.id = keys[i];
+        routes.push(copy);
+        continue;
+      }
+    }
+    sortByDelay(routes);
+    sortByDelay(stopIds);
+    drawSortedBars(routes, "routes");
+    drawSortedBars(stopIds.slice(0, 25), "stops");
   });
+  var stopNames;
+  $.getJSON("{% static 'js/stopnames.json' %}", function(result){
+    stopNames = result;
+  });
+  var times = ['6am','7am','8am','9am','10am','11am','12pm',
+               '1pm','2pm','3pm','4pm','5pm','6pm','7pm',
+               '8pm','9pm','10pm','11pm','12pm'];
   var bus = ""; /* current bus line */
   var dir = ""; /* current bus direction */
   var color = 0; /* color of current line */
@@ -246,14 +332,8 @@
   var vectorLayers = [];
 
 
-
-  // function transform(extent) {
-  //   return ol.proj.transformExtent(extent, 'EPSG:4326', 'EPSG:3857');
-  // }
-
   var raster = new ol.layer.Tile({
     source: new ol.source.OSM(),
-    // extent: transform([-122.271856, 37.860317, -122.247710, 37.877256])
   });
 
   /* MAP STYLES */
@@ -261,36 +341,36 @@
     {% for color in colors %}
     'MultiLineString{{ forloop.counter0 }}': new ol.style.Style({
       stroke: new ol.style.Stroke({
-        color: convertHex('{{ color }}', 60),
+        color: convertHex('{{ color }}', 80),
         width: 10
-      })
+      }),
     }),
     'MultiLineString{{ forloop.counter0 }}::active': new ol.style.Style({
       stroke: new ol.style.Stroke({
-        color: '{{ color }}',
-        width: 15
+        color: convertHex('{{ color }}', 100),
+        width: 12
       })
     }),
     'Point{{ forloop.counter0 }}': new ol.style.Style({
       image: new ol.style.Circle({
         fill: new ol.style.Fill({
-          color: convertHex('{{ color }}', 60)
+          color: convertHex('{{ color }}', 80)
         }),
-        radius: 12,
+        radius: 10,
         stroke: new ol.style.Stroke({
-          color: '#111',
-          width: 1
+          color: [0, 0, 0, 0.5],
+          width: 2
         })
       })
     }),
     'Point{{ forloop.counter0 }}::active': new ol.style.Style({
       image: new ol.style.Circle({
         fill: new ol.style.Fill({
-          color: '{{ color }}'
+          color: convertHex('{{ color }}', 100)
         }),
-        radius: 12,
+        radius: 10,
         stroke: new ol.style.Stroke({
-          color: '#111',
+          color: [0, 0, 0, 0.9],
           width: 3
         })
       })
@@ -323,9 +403,10 @@
     view: new ol.View({
       // 37.868791, -122.256632
       center: ol.proj.fromLonLat([-122.2582, 37.8688]),
-      maxZoom: 17,
-      minZoom: 15,
+      maxZoom: 18,
+      minZoom: 16,
       zoom: 16,
+      extent: transform([-122.271856, 37.860317, -122.247710, 37.877256]),
       // zoomControl: false,
     })
   });
@@ -338,5 +419,131 @@
     activateFeature(evt.pixel, 'click');
   });
 
+  function drawHist(dataset, timesLate) {
+    d3.select("svg").remove();
+    var max = d3.max(dataset);
+
+    var w = 440;
+    var h = 100;
+    var barPadding = 1;
+    var tickRange = [];
+    var svg = d3.select("#hist")
+      .append("svg")
+      .attr("width", w + 20)
+      .attr("height", h + 20);
+    svg.selectAll("rect")
+      .data(dataset)
+      .enter()
+      .append("rect")
+      .attr("x", 0)
+      .attr("y", function(d) {
+        return h - Math.floor(d / max * 100);  //Height minus data value
+      })
+      .attr("width", 20)
+      .attr("height", 100)
+      .attr("x", function(d, i) {
+        if (i % 2 === 0) {
+          tickRange.push(10 + i * (w / dataset.length));
+        }
+        return 10 + i * (w / dataset.length);  //Bar width of 20 plus 1 for padding
+      })
+      .attr("width", w / dataset.length - barPadding)
+      .attr("height", function(d) {
+        return Math.floor(d / max * 100);
+      })
+      .attr("fill", function(d) { // green: 0,118,87 red: 213,45,45
+        var r = Math.floor(d / max * 255) + ",";
+        var g = 118 - Math.floor(d / max * 73) + ",";
+        var b = 87 - Math.floor(d / max * 42);
+        return "rgb(" + r + g + b + ")";
+      });
+    tickRange.push(w + 10);
+    var xScale = d3.scaleOrdinal()
+      .domain(times)
+      .range(tickRange);
+    var xAxis = d3.axisBottom(xScale);
+    svg.append('g')
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + h + ")")
+      .call(xAxis);
+  }
+
+  function drawSortedBars(dataset, option) {
+    var xValues = [];
+    var yValues = [];
+    for (var i = 0; i < dataset.length; i++) {
+      xValues.push(dataset[i].mean);
+      if (option === "routes") {
+        yValues.push(dataset[i].id);
+      } else {
+        yValues.push(stopNames[dataset[i].id]);
+      }
+    }
+    //set up svg using margin conventions
+    var margin = {
+      top: 15,
+      right: 25,
+      bottom: 15,
+      left: 200
+    };
+    var width = 960 - margin.left - margin.right;
+    var height = 500 - margin.top - margin.bottom;
+    var svg = d3.select("#" + option + "-bar").append("svg")
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom)
+      .append("g")
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    // var x = d3.scaleLinear()
+    //   .domain([0, xValues[0]])
+    //   .range([0, width]);
+    var yScale = d3.scaleBand()
+      .rangeRound([height, false])
+      .padding(0)
+      .domain(yValues);
+    // var yScale = d3.scaleLinear()
+    //   .domain(yValues)
+    //   .range([height - margin.top, margin.bottom]);
+    var yAxis = d3.axisLeft()
+      .scale(yScale);
+    var gy = svg.append("g")
+      .attr("class", "y axis")
+      .call(yAxis);
+    var bars = svg.selectAll(".bar")
+      .data(dataset)
+      .enter()
+      .append("g");
+    bars.append("rect")
+      .attr("class", function(d) {
+        return "bar route-" + d.id.split("_")[0];
+      })
+      .attr("y", function(d, i) {
+        return i * (yScale.bandwidth());
+      })
+      .attr("height", yScale.bandwidth())
+      .attr("x", function(d) {
+        if (d.mean < 0) {
+          return d.mean;
+        }
+        return 0;
+      })
+      .attr("width", function(d) {
+        return Math.abs(d.mean);
+      });
+    //add a value label to the right of each bar
+    bars.append("text")
+      .attr("class", "label")
+      .attr("y", function (d, i) {
+          return i * (yScale.bandwidth()) + yScale.bandwidth() / 2 + 4;
+      })
+      .attr("x", function (d) {
+        if (d.mean < 0) {
+          return 3;
+        }
+        return d.mean + 3;
+      })
+      .text(function (d) {
+          return convertTime(d.mean);
+      });
+  }
 
 </script>

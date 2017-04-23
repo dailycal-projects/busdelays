@@ -1,0 +1,138 @@
+h1 {
+  text-align: center;
+}
+
+#lines {
+  width: 80%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 12px;
+  text-align: center;
+  position: relative;
+}
+
+#lines button {
+  border-radius: 16px;
+  border-width: 3px;
+  border-color: #333;
+  border-style: solid;
+  color: #fff;
+  padding-left: 8px;
+  padding-right: 8px;
+  margin-left: 2px;
+  margin-right: 2px;
+  font-size: 24px;
+  outline: none;
+}
+
+#dirs {
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 12px;
+  text-align: center;
+  position: relative;
+  opacity: 0;
+  transition: opacity .5s ease-in-out;
+  -moz-transition: opacity .5s ease-in-out;
+  -webkit-transition: opacity .5s ease-in-out;
+}
+
+#dirs button {
+  font-size: 18px;
+  border-radius: 12px;
+  border-width: 3px;
+  border-style: solid;
+  border-color: #333;
+  outline: none;
+  background-color: #333;
+  color: lightblue;
+}
+
+.dir {
+  display: none;
+}
+
+#map {
+  height: 600px;
+  left: 0;
+  right: 0;
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+  position: absolute;
+  opacity: 0;
+  transition: opacity .5s ease-in-out;
+  -moz-transition: opacity .5s ease-in-out;
+  -webkit-transition: opacity .5s ease-in-out;
+}
+
+#info {
+  width: 40%;
+  height: 600px;
+  margin-right: 5%;
+  display: none;
+  position: absolute;
+  right: 0;
+  background-color: rgba(255,255,255,0.6);
+  padding: 48px 30px 48px 30px;
+}
+
+#info h3 {
+  margin-top: 10px;
+  font-weight: normal;
+}
+
+#info span {
+  font-weight: bold;
+}
+
+#stopId {
+  margin-bottom: 0;
+}
+
+#stopName {
+  margin: 0 0 4px 0;
+}
+
+#route {
+  border-radius: 16px;
+  border-width: 2px;
+  border-color: #333;
+  border-style: solid;
+  color: #fff;
+  padding-left: 8px;
+  padding-right: 8px;
+  margin: 0px 2px 0px 2px;
+  font-size: 18px;
+  font-weight: normal;
+  display: inline-block;
+}
+
+#direction {
+  border-radius: 16px;
+  border-width: 2px;
+  border-color: #333;
+  border-style: solid;
+  background-color: #333;
+  color: lightblue;
+  padding-left: 8px;
+  padding-right: 8px;
+  margin: 0px 2px 0px 2px;
+  font-size: 18px;
+  font-weight: normal;
+  display: inline-block;
+}
+
+#hist {
+  margin-top: 20px;
+}
+
+div.bar {
+  display: inline-block;
+  width: 20px;
+  height: 75px;   /* We'll override this later */
+  background-color: teal;
+  margin-right: 2px;
+}
