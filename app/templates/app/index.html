@@ -4,57 +4,6 @@
 <link rel="stylesheet" href="{% static "css/bootstrap.css" %}"/>
 <link rel="stylesheet" href="{% static "css/ol.css" %}"/>
 <link rel="stylesheet" href="{% static "css/style.css" %}"/>
-<style>
-  /* Colors */
-  .route-6 {
-    background-color: {{ colors.0 }};
-    fill: {{ colors.0 }};
-  }
-  .route-7 {
-    background-color: {{ colors.1 }};
-    fill: {{ colors.1 }};
-  }
-  .route-12 {
-    background-color: {{ colors.2 }};
-    fill: {{ colors.2 }};
-  }
-  .route-18 {
-    background-color: {{ colors.3 }};
-    fill: {{ colors.3 }};
-  }
-  .route-36 {
-    background-color: {{ colors.4 }};
-    fill: {{ colors.4 }};
-  }
-  .route-51B {
-    background-color: {{ colors.5 }};
-    fill: {{ colors.5 }};
-  }
-  .route-52 {
-    background-color: {{ colors.6 }};
-    fill: {{ colors.6 }};
-  }
-  .route-65 {
-    background-color: {{ colors.7 }};
-    fill: {{ colors.7 }};
-  }
-  .route-67 {
-    background-color: {{ colors.8 }};
-    fill: {{ colors.8 }};
-  }
-  .route-79 {
-    background-color: {{ colors.9 }};
-    fill: {{ colors.9 }};
-  }
-  .route-88 {
-    background-color: {{ colors.10 }};
-    fill: {{ colors.10 }};
-  }
-  .route-F {
-    background-color: {{ colors.11 }};
-    fill: {{ colors.11 }};
-  }
-</style>
 
 <h1>Are ACTransit Buses on Schedule?</h1>
 <div id="lines">
@@ -64,7 +13,7 @@
   <button onclick="toggleDir('12')" class="route-12">12</button>
   <button onclick="toggleDir('18')" class="route-18">18</button>
   <button onclick="toggleDir('36')" class="route-36">36</button>
-  <button onclick="toggleDir('51B')" class="route-51B">51B</button>
+  <button onclick="toggleDir('51B')" class="route-51B selected">51B</button>
   <button onclick="toggleDir('52')" class="route-52">52</button>
   <button onclick="toggleDir('65')" class="route-65">65</button>
   <button onclick="toggleDir('67')" class="route-67">67</button>
@@ -129,6 +78,9 @@
 <script src="{% static "js/jquery-3.2.1.js" %}" type="text/javascript"></script>
 
 <div id="map-info">
+  <div id="cover">
+    <p>Please choose a route and a direction to uncover the map.</p>
+  </div>
   <div id="map" class="map"></div>
   <div id="info">
     <h4 id="stopId"></h4>
@@ -142,10 +94,9 @@
     <h3 id="vlate"></h3>
     <p>The histogram below takes the delays that are at least 5 minutes to show which times of day appear are the busiest for this stop or route.</p>
     <div id="hist"></div>
-    <button onclick="hideInfo()">[Hide this side bar]</button>
   </div>
 </div>
-<div class="container">
+<div id="additional" class="container">
   <h2>The most delayed routes..</h2>
   <div id="routes-bar"></div>
   <h2>The most delayed stops..</h2>
@@ -156,7 +107,7 @@
 
 <script type="text/javascript">
 
-  /* UTILITY FUNCTIONS */
+  /* EVENT FUNCTIONS */
   function toggleDir(line) {
     for (var i = 0; i < vectorLayers.length; i++) {
       vectorLayers[i].setVisible(false);
@@ -167,25 +118,26 @@
     }
     var name = "direction-" + line;
     bus = line;
-    document.getElementById(name).setAttribute("style", "display: inline-block");
-    document.getElementById("dirs").setAttribute("style", "opacity: 1");
-    document.getElementById("map").setAttribute("style", "opacity: 1");
-    // view.animate({
-    //   center: london,
-    //   duration: 2000
-    // });
+    document.getElementById(name).style.display = "inline-block";
+    document.getElementById("dirs").style.opacity = 1;
   };
 
   function toggleRoute(dom, index) {
-    // document.getElementById("map").setAttribute("style", "display: block");
+    document.getElementById("cover").style.display = "none";
+    document.getElementById("additional").style.display = "block";
     for (var i = 0; i < vectorLayers.length; i++) {
       vectorLayers[i].setVisible(false);
     }
     vectorLayers[index].setVisible(true);
     color = Math.floor(index / 2);
     dir = dom.textContent;
+    view.animate({
+      center: window['r' + bus],
+      duration: 1200
+    });
   };
 
+  /* UTILITY FUNCTIONS */
   function convertHex(hex, opacity) {
     hex = hex.replace('#','');
     r = parseInt(hex.substring(0,2), 16);
@@ -205,92 +157,28 @@
     }
   };
 
-  function transform(extent) {
-    return ol.proj.transformExtent(extent, 'EPSG:4326', 'EPSG:3857');
-  }
-
-  function activateFeature(pixel, onEvent) {
-    var features = [];
-    map.forEachFeatureAtPixel(pixel, function(feature) {
-      features.push(feature);
-    });
-    /* Clear all active features on click. Clear all features that
-       are not activated by a previous click on mouseover. */
-    if (onEvent === "click") {
-      if (active != null) {
-        var activeType = active.getGeometry().getType();
-        active.setStyle(style[activeType + color]);
-        active = null;
-      }
-    } else {
-      if (hover != null && hover !== active) {
-        var hoverType = hover.getGeometry().getType();
-        hover.setStyle(style[hoverType + color]);
-        hover = null;
-      }
-    }
-    /* Highlight top feature */
-    if (features.length > 0) {
-      map.getViewport().style.cursor = 'pointer';
-      var info = [];
-      for (var i = 0; i < features.length; i++) {
-        info.push(features[i].get('desc'));
-      }
-      var type = features[0].getGeometry().getType();
-      features[0].setStyle(style[type + color + "::active"]);
-      if (onEvent === "click") {
-        active = features[0];
-        var stats = fetchInfo(active.get('desc'), false);
-        fillInfo(stats);
-      } else {
-        hover = features[0];
-      }
-    } else {
-      map.getViewport().style.cursor = '';
-    }
-  };
-
   function sortByDelay(list) {
     var sorted = list.sort(function(x, y){
       return d3.descending(x.mean, y.mean);
     });
   };
 
-  function fetchInfo(id, isGeneral) {
-    var key = id;
-    if (!id.includes("_") && !isGeneral) {
-      key = id + "_" + bus + "_" + dir;
+  function aggregateDelays(list) {
+    var times = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+    for (var i = 0; i < list.length; i++) {
+      var delays = list[i].hist;
+      for (var j = 0; j < delays.length; j++) {
+        times[j] += delays[j];
+      }
     }
-    return [key, data[key]];
-  };
-
-  function fillInfo(stats) {
-    document.getElementById("info").style.display = 'block';
-    var marker = stats[0].split("_");
-    document.getElementById("route").innerHTML = bus;
-    document.getElementById("route").className = "route-" + bus;
-    document.getElementById("direction").innerHTML = dir;
-    if (marker.length === 3) {
-      document.getElementById("stopId").style.display = "block";
-      document.getElementById("stopId").innerHTML = "Stop ID: " + marker[0];
-      document.getElementById("stopName").innerHTML = stopNames[marker[0]];
-    } else {
-      document.getElementById("stopId").style.display = "none";
-      document.getElementById("stopName").innerHTML = "Route Information";
-    }
-    document.getElementById("mean").innerHTML = "Average Delay: <span>" + convertTime(stats[1]["mean"]) + "</span>";
-    document.getElementById("median").innerHTML = "Median Delay: <span>" + convertTime(stats[1]["median"]) + "</span>";
-    // document.getElementById("std").innerHTML = "Standard Deviation: " + stats[1]["std"] + " seconds";
-    document.getElementById("late").innerHTML = "At least 5 minutes delay: <span>" + Math.floor(stats[1]["late"] / stats[1]["length"] * 100) + "%</span>";
-    document.getElementById("vlate").innerHTML = "At least 10 minutes delay: <span>" + Math.floor(stats[1]["vlate"] / stats[1]["length"] * 100) + "%</span>";
-    drawHist(stats[1]["hist"], stats[1]["late"]);
-  };
-
-  function hideInfo() {
-    document.getElementById("info").style.display = "none";
-  };
+    return times;
+  }
 
   /* GLOBAL VARIABLES TO KEEP TRACK OF */
+  var stopNames;
+  $.getJSON("{% static 'js/stopnames.json' %}", function(result){
+    stopNames = result;
+  });
   var data; /* fetch json asynchronously */
   var routes = []; /* routes by descending order */
   var stopIds = []; /* stops by descending order */
@@ -314,12 +202,10 @@
     }
     sortByDelay(routes);
     sortByDelay(stopIds);
-    drawSortedBars(routes, "routes");
-    drawSortedBars(stopIds.slice(0, 25), "stops");
-  });
-  var stopNames;
-  $.getJSON("{% static 'js/stopnames.json' %}", function(result){
-    stopNames = result;
+    drawSortedBars(routes.slice(0, 21), "routes");
+    drawSortedBars(stopIds.slice(0, 20), "stops");
+    var copy = aggregateDelays(stopIds);
+    drawHist(copy, "times-bar");
   });
   var times = ['6am','7am','8am','9am','10am','11am','12pm',
                '1pm','2pm','3pm','4pm','5pm','6pm','7pm',
@@ -330,13 +216,30 @@
   var active = null; /* active feature */
   var hover = null; /* hover feature */
   var vectorLayers = [];
+  /* CONSTANTS: Projections for each route. */
+  var r6 = ol.proj.fromLonLat([-122.261943, 37.866976]); //37.866976, -122.261943
+  var r7 = ol.proj.fromLonLat([-122.266520, 37.873903]); //37.873903, -122.266520
+  var r12 = ol.proj.fromLonLat([-122.268154, 37.862520]); //37.862520, -122.268154
+  var r18 = ol.proj.fromLonLat([-122.267477, 37.866868]); //37.866868, -122.267477
+  var r36 = ol.proj.fromLonLat([-122.261340, 37.866013]); //37.866013, -122.261340
+  var r51B = ol.proj.fromLonLat([-122.261276, 37.867495]); //37.867495, -122.261276
+  var r52 = ol.proj.fromLonLat([-122.261580, 37.871708]); //37.871708, -122.261580
+  var r65 = ol.proj.fromLonLat([-122.265167, 37.874832]); //37.874832, -122.265167
+  var r67 = ol.proj.fromLonLat([-122.266344, 37.872394]); //37.872394, -122.266344
+  var r79 = ol.proj.fromLonLat([-122.259189, 37.867030]); //37.867030, -122.259189
+  var r88 = ol.proj.fromLonLat([-122.267837, 37.870075]); //37.870075, -122.267837
+  var rF = ol.proj.fromLonLat([-122.261580, 37.871708]); //37.871708, -122.261580
 
 
+  /**
+   * OPENLAYERS MAP SETTINGS. Generate map tiles in RASTER,
+   * place bus routes (in MultiLineString) and stops (in Point)
+   * on the map based on their bus route (and coinciding color).
+   */
   var raster = new ol.layer.Tile({
     source: new ol.source.OSM(),
   });
 
-  /* MAP STYLES */
   var style = {
     {% for color in colors %}
     'MultiLineString{{ forloop.counter0 }}': new ol.style.Style({
@@ -394,22 +297,102 @@
   vectorLayers.push(vector);
   {% endfor %}
 
+  /**
+   * Prevent users from exploring outside the EXTENT, and
+   * generate a view based on that extent and coordinates.
+   */
+  function transform(extent) {
+    return ol.proj.transformExtent(extent, 'EPSG:4326', 'EPSG:3857');
+  }
+
+  var view = new ol.View({
+    center: ol.proj.fromLonLat([-122.2582, 37.8688]),
+    maxZoom: 18,
+    minZoom: 16,
+    zoom: 16,
+    extent: transform([-122.271856, 37.860317, -122.247710, 37.877256]),
+  });
 
   var map = new ol.Map({
     target: 'map',
     interactions: ol.interaction.defaults({mouseWheelZoom:false}),
     // interactions: [],
     layers: Array(raster).concat(vectorLayers),
-    view: new ol.View({
-      // 37.868791, -122.256632
-      center: ol.proj.fromLonLat([-122.2582, 37.8688]),
-      maxZoom: 18,
-      minZoom: 16,
-      zoom: 16,
-      extent: transform([-122.271856, 37.860317, -122.247710, 37.877256]),
-      // zoomControl: false,
-    })
+    view: view
   });
+
+  /*
+   * Listen for click/hover interactions with the map and
+   * act accordingly. If click, clear all features that
+   * are not activated by a previous click on mouseover.
+   * Highlight the top feature that his clicked/hovered.
+   * Display info based on feature clicked, hide if feature-less
+   * part of map is clicked.
+   */
+  function activateFeature(pixel, onEvent) {
+   var features = [];
+   map.forEachFeatureAtPixel(pixel, function(feature) {
+     features.push(feature);
+   });
+    if (onEvent === "click") {
+      if (active != null) {
+        var activeType = active.getGeometry().getType();
+        active.setStyle(style[activeType + color]);
+        active = null;
+      }
+    } else {
+      if (hover != null && hover !== active) {
+        var hoverType = hover.getGeometry().getType();
+        hover.setStyle(style[hoverType + color]);
+        hover = null;
+      }
+    }
+    if (features.length > 0) {
+      map.getViewport().style.cursor = 'pointer';
+      var info = [];
+      for (var i = 0; i < features.length; i++) {
+        info.push(features[i].get('desc'));
+      }
+      var type = features[0].getGeometry().getType();
+      features[0].setStyle(style[type + color + "::active"]);
+      if (onEvent === "click") {
+        active = features[0];
+        var key = active.get('desc');
+        if (!key.includes("_")) {
+          key = key + "_" + bus + "_" + dir;
+        }
+        document.getElementById("info").style.display = 'block';
+        var marker = key.split("_");
+        document.getElementById("route").innerHTML = bus;
+        document.getElementById("route").className = "route-" + bus;
+        document.getElementById("direction").innerHTML = dir;
+        if (marker.length === 3) {
+          document.getElementById("stopId").style.display = "block";
+          document.getElementById("stopId").innerHTML = "Stop ID: " + marker[0];
+          document.getElementById("stopName").innerHTML = stopNames[marker[0]];
+        } else {
+          document.getElementById("stopId").style.display = "none";
+          document.getElementById("stopName").innerHTML = "Route Information";
+        }
+        var innerHTML = "Average Delay: <span>" + convertTime(data[key]["mean"]) + "</span>";
+        document.getElementById("mean").innerHTML = innerHTML;
+        innerHTML = "Median Delay: <span>" + convertTime(data[key]["median"]) + "</span>";
+        document.getElementById("median").innerHTML = innerHTML;
+        innerHTML = "At least 5 minutes delay: <span>" + Math.floor(data[key]["late"] / data[key]["length"] * 100) + "%</span>";
+        document.getElementById("late").innerHTML = innerHTML;
+        innerHTML = "At least 10 minutes delay: <span>" + Math.floor(data[key]["vlate"] / data[key]["length"] * 100) + "%</span>";
+        document.getElementById("vlate").innerHTML = innerHTML;
+        drawHist(data[key]["hist"], "hist");
+      } else {
+        hover = features[0];
+      }
+    } else {
+      map.getViewport().style.cursor = 'move';
+      if (onEvent === "click") {
+        document.getElementById("info").style.display = "none";
+      }
+    }
+  };
 
   map.on('pointermove', function(evt) {
     activateFeature(evt.pixel, 'pointermove');
@@ -419,37 +402,66 @@
     activateFeature(evt.pixel, 'click');
   });
 
-  function drawHist(dataset, timesLate) {
-    d3.select("svg").remove();
+  /*
+   * D3-utilizing function. Draw the histogram of delays per
+   * time slot based on the DATASET. OPTION tells us whether
+   * we are looking at each feature on the map or the final
+   * summary at the bottom of page.
+   */
+  function drawHist(dataset, option) {
+    d3.select("#info svg").remove();
     var max = d3.max(dataset);
+    var total = 0;
+    for (var i = 0; i < dataset.length; i++) {
+      total += dataset[i];
+    }
 
-    var w = 440;
-    var h = 100;
+    var margin;
+    var width;
+    var height;
+    if (option === "hist") {
+      margin = {
+        top: 15,
+        right: 25,
+        bottom: 20,
+        left: 40
+      };
+      width = 450;
+      height = 130;
+    } else {
+      margin = {
+        top: 15,
+        right: 25,
+        bottom: 30,
+        left: 40
+      };
+      width = 800;
+      height = 250;
+    }
+    var w = width - margin.left - margin.right; //440
+    var h = height - margin.top - margin.bottom; // 100
     var barPadding = 1;
     var tickRange = [];
-    var svg = d3.select("#hist")
+    var svg = d3.select("#" + option)
       .append("svg")
-      .attr("width", w + 20)
-      .attr("height", h + 20);
+      .attr("width", w + margin.left + margin.right) //w + 50
+      .attr("height", h + margin.top + margin.bottom); //h + 30
     svg.selectAll("rect")
       .data(dataset)
       .enter()
       .append("rect")
-      .attr("x", 0)
-      .attr("y", function(d) {
-        return h - Math.floor(d / max * 100);  //Height minus data value
-      })
-      .attr("width", 20)
-      .attr("height", 100)
       .attr("x", function(d, i) {
         if (i % 2 === 0) {
-          tickRange.push(10 + i * (w / dataset.length));
+          tickRange.push(margin.left + i * (w / dataset.length));
         }
-        return 10 + i * (w / dataset.length);  //Bar width of 20 plus 1 for padding
+        return margin.left + i * (w / dataset.length);  //Bar width of 20 plus 1 for padding
+      })
+      .attr("y", function(d) {
+        return margin.top + h - Math.floor(d / max * h);  //Height minus data value
       })
       .attr("width", w / dataset.length - barPadding)
       .attr("height", function(d) {
-        return Math.floor(d / max * 100);
+        return Math.floor(d / max * h);
       })
       .attr("fill", function(d) { // green: 0,118,87 red: 213,45,45
         var r = Math.floor(d / max * 255) + ",";
@@ -457,89 +469,105 @@
         var b = 87 - Math.floor(d / max * 42);
         return "rgb(" + r + g + b + ")";
       });
-    tickRange.push(w + 10);
+    tickRange.push(w + margin.left);
     var xScale = d3.scaleOrdinal()
       .domain(times)
       .range(tickRange);
     var xAxis = d3.axisBottom(xScale);
     svg.append('g')
       .attr("class", "x axis")
-      .attr("transform", "translate(0," + h + ")")
+      .attr("transform", "translate(0," + (margin.top + h) + ")")
       .call(xAxis);
+    var yScale = d3.scaleLinear()
+      .domain([0, 100])
+      .range([h, 0]);
+    var yAxis = d3.axisLeft()
+      .scale(yScale)
+      .tickValues([100])
+      .tickFormat(Math.floor(max / total * 100) + "%");
+    svg.append("g")
+      .attr("class", "y axis")
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+      .call(yAxis);
   }
 
+  /*
+   * D3-utilizing function. Draw the sorted routes or stops on
+   * a horizontal bar graph to compare average delays for each
+   * route or stop.
+   */
   function drawSortedBars(dataset, option) {
-    var xValues = [];
-    var yValues = [];
+    var tickNames = [];
     for (var i = 0; i < dataset.length; i++) {
-      xValues.push(dataset[i].mean);
       if (option === "routes") {
-        yValues.push(dataset[i].id);
+        var num = dataset[i].id.split("_")[0];
+        var desc = dataset[i].id.split("_")[1];
+        tickNames.push(num + ": " + desc);
       } else {
-        yValues.push(stopNames[dataset[i].id]);
+        tickNames.push("#" + dataset[i].id + ": " + stopNames[dataset[i].id]);
       }
     }
-    //set up svg using margin conventions
+
+    var width = $("#additional").width();
+    var max = dataset[0].mean;
     var margin = {
       top: 15,
       right: 25,
       bottom: 15,
-      left: 200
+      left: width * 0.35
     };
-    var width = 960 - margin.left - margin.right;
-    var height = 500 - margin.top - margin.bottom;
+    var w = width - margin.left - margin.right;
+    var h = 450 - margin.top - margin.bottom;
     var svg = d3.select("#" + option + "-bar").append("svg")
-      .attr("width", width + margin.left + margin.right)
-      .attr("height", height + margin.top + margin.bottom)
+      .attr("width", w + margin.left + margin.right)
+      .attr("height", h + margin.top + margin.bottom)
       .append("g")
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-    // var x = d3.scaleLinear()
-    //   .domain([0, xValues[0]])
-    //   .range([0, width]);
     var yScale = d3.scaleBand()
-      .rangeRound([height, false])
-      .padding(0)
-      .domain(yValues);
-    // var yScale = d3.scaleLinear()
-    //   .domain(yValues)
-    //   .range([height - margin.top, margin.bottom]);
+      .range([margin.bottom, h - margin.top])
+      .paddingInner(0.2)
+      .domain(tickNames);
     var yAxis = d3.axisLeft()
+      .tickSize(0)
       .scale(yScale);
-    var gy = svg.append("g")
-      .attr("class", "y axis")
+    svg.append("g")
+      .attr("class", "y axis big-y")
       .call(yAxis);
     var bars = svg.selectAll(".bar")
       .data(dataset)
       .enter()
       .append("g");
     bars.append("rect")
-      .attr("class", function(d) {
-        return "bar route-" + d.id.split("_")[0];
+      .attr("class", function(d, i) {
+        if (option === "routes") {
+          return "bar route-" + d.id.split("_")[0];
+        }
+        return "bar";
       })
       .attr("y", function(d, i) {
-        return i * (yScale.bandwidth());
+        return margin.top + i * (yScale.step());
       })
-      .attr("height", yScale.bandwidth())
-      .attr("x", function(d) {
-        if (d.mean < 0) {
-          return d.mean;
-        }
-        return 0;
-      })
+      .attr("height", yScale.step() - 2)
+      .attr("x", 0)
       .attr("width", function(d) {
-        return Math.abs(d.mean);
+        return (w - 100) * d.mean / max;
       });
-    //add a value label to the right of each bar
+    if (option !== "routes") {
+      svg.selectAll("rect")
+        .attr("fill", function(d) { // green: 0,118,87 red: 213,45,45
+          var r = Math.floor(d.mean / max * 255) + ",";
+          var g = 118 - Math.floor(d.mean / max * 73) + ",";
+          var b = 87 - Math.floor(d.mean / max * 42);
+          return "rgb(" + r + g + b + ")";
+        });
+    }
     bars.append("text")
       .attr("class", "label")
       .attr("y", function (d, i) {
-          return i * (yScale.bandwidth()) + yScale.bandwidth() / 2 + 4;
+          return margin.top + i * (yScale.step()) + yScale.step() / 2 + 4;
       })
       .attr("x", function (d) {
-        if (d.mean < 0) {
-          return 3;
-        }
-        return d.mean + 3;
+        return (w - 100) * d.mean / max + 3;
       })
       .text(function (d) {
           return convertTime(d.mean);
